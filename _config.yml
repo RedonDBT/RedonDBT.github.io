@@ -1,0 +1,26 @@
+title: 我的博客
+description: 使用Python自研的博客系统
+theme: minima
+
+url: ""
+baseurl: ""
+
+markdown: kramdown
+highlighter: rouge
+
+minima:
+  date_format: "%Y-%m-%d"
+  social_links:
+    github: 
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+exclude:
+  - blog_manager.py
+  - blog_config.yaml
+  - requirements.txt
+  - homework.py
+  - README.md
+  - .git
