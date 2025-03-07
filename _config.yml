@@ -1,33 +1,33 @@
-title: '派家博客'
-description: '记录我的学习、思考和生活点滴'
-theme: minima
-url: ''
 baseurl: ''
-markdown: kramdown
-highlighter: rouge
-minima:
-  date_format: '%Y-%m-%d'
-  social_links:
-    github: 'RedonDBT'
-  skin: dark
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-exclude:
-  - blog_manager.py
-  - blog_config.yaml
-  - requirements.txt
-  - homework.py
-  - README.md
-  - .git
 collections:
   posts:
     output: true
     permalink: /posts/:title
 defaults:
-  - scope:
-      path: "posts"
-      type: "pages"
-    values:
-      layout: "default"
-      permalink: /posts/:basename
+- scope:
+    path: posts
+    type: pages
+  values:
+    layout: default
+    permalink: /posts/:basename
+description: 记录我的学习、思考和生活点滴
+exclude:
+- blog_manager.py
+- blog_config.yaml
+- requirements.txt
+- homework.py
+- README.md
+- .git
+highlighter: rouge
+markdown: kramdown
+minima:
+  date_format: '%Y-%m-%d'
+  skin: dark
+  social_links:
+    github: RedonDBT
+plugins:
+- jekyll-feed
+- jekyll-seo-tag
+theme: minima
+title: 派家博客
+url: ''
