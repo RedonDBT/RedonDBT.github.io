@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查看文章 - 博客管理系统</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+    
+<style>
+    .blog-post-content {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .post-meta {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+        font-size: 0.9rem;
+    }
+    .post-meta .meta-item {
+        margin-right: 15px;
+        display: inline-block;
+    }
+    .post-meta .meta-item i {
+        margin-right: 5px;
+        color: #3498db;
+    }
+    .post-meta .tag {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin: 2px;
+    }
+    @media (max-width: 767px) {
+        .blog-post-content {
+            padding: 15px;
+        }
+        .post-meta {
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">派家博客</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> 首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/create"><i class="fas fa-edit"></i> 写文章</a>
+                    </li>
+                </ul>
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/sync" id="syncBtn">
+                        <i class="fas fa-sync"></i> 同步到GitHub
+                    </a>
+                    <a class="nav-link" href="#" id="configBtn">
+                        <i class="fas fa-cog"></i> 修改配置
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="syncToast" class="toast" role="alert">
+                <div class="toast-header">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong class="me-auto">同步状态</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body" id="syncMessage"></div>
+            </div>
+        </div>
+
+        <!-- 配置编辑模态框 -->
+        <div class="modal fade" id="configModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">修改配置</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="configForm">
+                            <div class="mb-3">
+                                <label for="configContent" class="form-label">配置内容</label>
+                                <textarea class="form-control" id="configContent" rows="10"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="saveConfig">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>文章内容</h2>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回列表
+            </a>
+        </div>
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <div class="meta-item">
+                    <i class="far fa-calendar-alt"></i>
+                    2025-03-07
+                </div>
+                
+                <div class="meta-item">
+                    <i class="fas fa-tags"></i>
+                    
+                    <span class="tag">生活</span>
+                    
+                </div>
+                
+            </div>
+            <div class="blog-post">
+                <h1>顶顶顶</h1><h2>我去了</h2><h3>你好</h3><p>🐂🍺</p>
+            </div>
+        </article>
+    </div>
+</div>
+
+    </div>
+
+    <footer class="footer mt-5 py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">© 2025 派家博客 - 用心记录生活的点点滴滴</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+
+    <script>
+        $(document).ready(function() {
+            const syncToast = new bootstrap.Toast(document.getElementById('syncToast'));
+            const configModal = new bootstrap.Modal(document.getElementById('configModal'));
+            
+            $('#syncBtn').click(function(e) {
+                e.preventDefault();
+                $('#syncMessage').text('正在同步...');
+                $('#syncToast').removeClass('bg-success bg-danger').addClass('bg-info');
+                syncToast.show();
+                
+                $.get('/sync', function(response) {
+                    if (response.success) {
+                        $('#syncMessage').text(response.message);
+                        $('#syncToast').removeClass('bg-info bg-danger').addClass('bg-success');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        $('#syncMessage').text(response.message);
+                        $('#syncToast').removeClass('bg-info bg-success').addClass('bg-danger');
+                    }
+                    syncToast.show();
+                });
+            });
+
+            // 配置按钮点击事件
+            $('#configBtn').click(function(e) {
+                e.preventDefault();
+                // 获取当前配置
+                $.get('/get_config', function(response) {
+                    if (response.success) {
+                        $('#configContent').val(response.config);
+                        configModal.show();
+                    } else {
+                        $('#syncMessage').text('获取配置失败：' + response.message);
+                        $('#syncToast').removeClass('bg-info bg-success').addClass('bg-danger');
+                        syncToast.show();
+                    }
+                });
+            });
+
+            // 保存配置
+            $('#saveConfig').click(function() {
+                const config = $('#configContent').val();
+                $.ajax({
+                    url: '/save_config',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ config: config }),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#syncMessage').text('配置保存成功');
+                            $('#syncToast').removeClass('bg-info bg-danger').addClass('bg-success');
+                            configModal.hide();
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            $('#syncMessage').text('保存配置失败：' + response.message);
+                            $('#syncToast').removeClass('bg-info bg-success').addClass('bg-danger');
+                        }
+                        syncToast.show();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
