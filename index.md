@@ -5,6 +5,7 @@
 ## 最新文章
 
 - [15ultra](/posts/2025-03-07-15ultra.html)
+- [ahaha](/posts/2025-03-08-ahaha.html)
 - [咧气王](/posts/2025-03-07-咧气王.html)
 - [我去了](/posts/2025-03-07-我去了.html)
 
