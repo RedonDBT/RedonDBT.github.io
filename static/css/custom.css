@@ -1,0 +1,149 @@
+/* 派家博客自定义样式 */
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --text-color: #34495e;
+    --light-bg: #ecf0f1;
+    --font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* 导航栏样式 */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-dark {
+    background-color: var(--primary-color) !important;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* 文章列表样式 */
+.list-group-item {
+    border: none;
+    margin-bottom: 1rem;
+    border-radius: 8px !important;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.list-group-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.list-group-item h5 {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* 标签样式 */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 1em;
+    border-radius: 20px;
+}
+
+.bg-secondary {
+    background-color: var(--accent-color) !important;
+}
+
+/* 按钮样式 */
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+    transform: translateY(-1px);
+}
+
+/* 页脚样式 */
+.footer {
+    background-color: var(--light-bg) !important;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+/* 警告框样式 */
+.alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.alert-warning {
+    background-color: #fef9e7;
+    color: #8d6e63;
+}
+
+.alert-info {
+    background-color: #ebf5fb;
+    color: #2980b9;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/* 文章内容页面样式 */
+.markdown-body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+    color: var(--primary-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.markdown-body h1 {
+    font-size: 2.2rem;
+    border-bottom: 2px solid var(--light-bg);
+    padding-bottom: 0.5rem;
+}
+
+.markdown-body pre {
+    background-color: var(--light-bg);
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+/* YAML头部样式 */
+.markdown-body pre:first-of-type {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    font-family: monospace;
+}
