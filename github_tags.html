@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>标签云 - 派家博客</title>
+    <title>派家博客</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -236,7 +236,8 @@
         }
     </style>
     
-    
+    <!-- 页面特定CSS -->
+    <div id="extra-css"></div>
 </head>
 <body>
     <!-- 导航栏 -->
@@ -274,37 +275,9 @@
 
     <!-- 主要内容 -->
     <div class="container mt-4">
-        
-<div class="row">
-    <div class="col-12">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-tags me-2"></i>标签云</h5>
-            </div>
-            <div class="card-body">
-                <div id="tags-container" class="text-center py-3">
-                    <!-- 标签将通过JavaScript动态加载 -->
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">加载中...</span>
-                    </div>
-                    <p class="mt-3">正在加载标签...</p>
-                </div>
-            </div>
+        <div id="main-content">
+            <!-- 页面内容将在这里动态加载 -->
         </div>
-        
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-list me-2"></i>按标签浏览文章</h5>
-            </div>
-            <div class="card-body">
-                <div id="tag-posts-container">
-                    <p class="text-center text-muted">请从上方选择一个标签查看相关文章</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
     </div>
 
     <!-- 页脚 -->
@@ -359,160 +332,7 @@
         });
     </script>
     
-    
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tagsContainer = document.getElementById('tags-container');
-        const tagPostsContainer = document.getElementById('tag-posts-container');
-        
-        // 从posts_data.json加载文章
-        fetch('posts_data.json')
-            .then(response => response.json())
-            .then(data => {
-                console.log('加载的数据:', data); // 调试信息
-                
-                // 处理标签
-                const tagCounts = {};
-                data.posts.forEach(post => {
-                    console.log('处理文章:', post.title, '标签:', post.tags); // 调试信息
-                    if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
-                        post.tags.forEach(tag => {
-                            if (tag && typeof tag === 'string' && tag.trim()) {
-                                const normalizedTag = tag.trim();
-                                tagCounts[normalizedTag] = (tagCounts[normalizedTag] || 0) + 1;
-                            }
-                        });
-                    }
-                });
-                
-                console.log('标签统计:', tagCounts); // 调试信息
-                
-                // 渲染标签云
-                tagsContainer.innerHTML = '';
-                
-                if (Object.keys(tagCounts).length === 0) {
-                    tagsContainer.innerHTML = '<p class="text-muted">暂无标签</p>';
-                } else {
-                    // 按标签数量排序
-                    const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
-                    
-                    // 计算标签大小
-                    const maxCount = Math.max(...Object.values(tagCounts));
-                    const minCount = Math.min(...Object.values(tagCounts));
-                    
-                    sortedTags.forEach(tag => {
-                        const count = tagCounts[tag];
-                        const tagElement = document.createElement('a');
-                        tagElement.href = `javascript:showPostsByTag('${tag}')`;
-                        tagElement.className = 'tag-item';
-                        
-                        // 计算标签大小 (1-5)
-                        const size = minCount === maxCount 
-                            ? 3 
-                            : Math.ceil(((count - minCount) / (maxCount - minCount)) * 5);
-                        
-                        tagElement.classList.add(`size-${size}`);
-                        tagElement.innerHTML = `${tag} <span class="badge bg-secondary">${count}</span>`;
-                        tagsContainer.appendChild(tagElement);
-                    });
-                }
-                
-                // 检查URL参数是否有标签
-                const urlParams = new URLSearchParams(window.location.search);
-                const tagParam = urlParams.get('tag');
-                
-                if (tagParam) {
-                    showPostsByTag(tagParam, data.posts);
-                }
-            })
-            .catch(error => {
-                console.error('加载标签失败:', error);
-                tagsContainer.innerHTML = '<p class="text-danger">加载标签失败，请稍后再试</p>';
-            });
-        
-        // 全局函数，显示特定标签的文章
-        window.showPostsByTag = function(tag, cachedPosts) {
-            // 如果没有缓存的文章，重新获取
-            if (!cachedPosts) {
-                tagPostsContainer.innerHTML = `
-                    <div class="text-center py-3">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">加载中...</span>
-                        </div>
-                        <p class="mt-3">正在加载文章...</p>
-                    </div>
-                `;
-                
-                fetch('posts_data.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        renderPostsByTag(tag, data.posts);
-                    })
-                    .catch(error => {
-                        console.error('加载文章失败:', error);
-                        tagPostsContainer.innerHTML = '<p class="text-danger">加载文章失败，请稍后再试</p>';
-                    });
-            } else {
-                renderPostsByTag(tag, cachedPosts);
-            }
-            
-            // 更新URL，但不刷新页面
-            const url = new URL(window.location);
-            url.searchParams.set('tag', tag);
-            window.history.pushState({}, '', url);
-        };
-        
-        function renderPostsByTag(tag, posts) {
-            // 筛选包含该标签的文章
-            const filteredPosts = posts.filter(post => 
-                post.tags && Array.isArray(post.tags) && post.tags.some(t => t.trim() === tag.trim())
-            );
-            
-            // 渲染文章列表
-            tagPostsContainer.innerHTML = `
-                <div class="mb-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4><i class="fas fa-tag me-2"></i>${tag}</h4>
-                        <span class="badge bg-primary">${filteredPosts.length} 篇文章</span>
-                    </div>
-                    <hr>
-                </div>
-            `;
-            
-            if (filteredPosts.length === 0) {
-                tagPostsContainer.innerHTML += `
-                    <div class="alert alert-warning">
-                        <p class="mb-0">没有找到包含标签 "${tag}" 的文章</p>
-                    </div>
-                `;
-            } else {
-                // 按日期排序（最新的在前面）
-                filteredPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                const listGroup = document.createElement('div');
-                listGroup.className = 'list-group';
-                
-                filteredPosts.forEach(post => {
-                    const item = document.createElement('a');
-                    item.href = `./posts/${post.filename}`;
-                    item.className = 'list-group-item list-group-item-action';
-                    
-                    item.innerHTML = `
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">${post.title}</h5>
-                            <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>${post.date}</small>
-                        </div>
-                        ${post.excerpt ? `<p class="mb-1 text-muted">${post.excerpt}</p>` : ''}
-                    `;
-                    
-                    listGroup.appendChild(item);
-                });
-                
-                tagPostsContainer.appendChild(listGroup);
-            }
-        }
-    });
-</script>
-
+    <!-- 页面特定JavaScript -->
+    <div id="extra-js"></div>
 </body>
 </html> 
