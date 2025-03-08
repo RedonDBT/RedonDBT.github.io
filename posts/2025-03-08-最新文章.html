@@ -1,246 +1,342 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>最新文章！！！！ - 派家博客</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="最新文章！！！！ - 派家博客">
-    <meta name="keywords" content="雷军, 小米">
-    <meta name="author" content="派同学">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://redondbt.github.io/posts/{{filename}}">
-    <meta property="og:title" content="最新文章！！！！">
-    <meta property="og:description" content="最新文章！！！！ - 派家博客">
-    <meta property="og:site_name" content="派家博客">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://redondbt.github.io/posts/{{filename}}">
-    <meta property="twitter:title" content="最新文章！！！！">
-    <meta property="twitter:description" content="最新文章！！！！ - 派家博客">
-    
-    <!-- Stylesheets -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.css" rel="stylesheet">
-    <link href="../static/css/custom.css" rel="stylesheet">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="../static/img/favicon.png">
-    
-    <!-- Dark Mode Support -->
-    <script>
-        // 检查用户偏好
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-bs-theme', 'light');
-        }
-    </script>
-    
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f8f9fa;
-        }
-        .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .article-container {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .article-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #343a40;
-        }
-        .article-meta {
-            color: #6c757d;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-        .article-content {
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-        .article-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin: 20px 0;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .article-content h1, .article-content h2, .article-content h3 {
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-        .article-content p {
-            margin-bottom: 20px;
-        }
-        .article-content pre {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        .article-content blockquote {
-            border-left: 4px solid #007bff;
-            padding-left: 20px;
-            color: #6c757d;
-            font-style: italic;
-        }
-        .post-tags .badge {
-            padding: 5px 10px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-decoration: none;
-        }
-        .footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 30px 0;
-            margin-top: 50px;
-        }
-        .footer a {
-            color: #fff;
-            opacity: 0.8;
-        }
-        .footer a:hover {
-            opacity: 1;
-        }
-        
-        /* Dark Mode Styles */
-        [data-bs-theme="dark"] {
-            --bs-body-bg: #212529;
-            --bs-body-color: #f8f9fa;
-        }
-        
-        [data-bs-theme="dark"] .article-container {
-            background-color: #2c3034;
-            color: #e9ecef;
-        }
-        
-        [data-bs-theme="dark"] .article-title {
-            color: #f8f9fa;
-        }
-        
-        [data-bs-theme="dark"] .article-content pre {
-            background-color: #343a40;
-            color: #e9ecef;
-        }
-        
-        /* 主题切换按钮 */
-        .theme-toggle {
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="../index.html">派家博客</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html"><i class="fas fa-home"></i> 首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html#tags-section"><i class="fas fa-tags"></i> 标签</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html#about-section"><i class="fas fa-user"></i> 关于我</a>
-                    </li>
-                </ul>
-                <div class="nav-item theme-toggle" id="themeToggle">
-                    <i class="fas fa-moon"></i>
+{% extends "github_base.html" %}
+
+{% block title %}最新文章！！！！ - 派家博客 - 派家博客{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h1 class="card-title mb-3">最新文章！！！！ - 派家博客</h1>
+                
+                <div class="d-flex align-items-center text-muted mb-4">
+                    <div class="me-3">
+                        <i class="far fa-calendar-alt me-1"></i>
+                        <span></span>
+                    </div>
+                    {% if author %}
+                    <div class="me-3">
+                        <i class="far fa-user me-1"></i>
+                        <span>{{author}}</span>
+                    </div>
+                    {% endif %}
+                    {% if tags and tags|length > 0 %}
+                    <div>
+                        <i class="fas fa-tags me-1"></i>
+                        {% for tag in tags %}
+                        <a href="../github_tags.html?tag={{tag}}" class="badge bg-secondary text-decoration-none me-1">{{tag}}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="post-content">
+                    <article class="blog-post">
+<p>小米su7 ultra发布！！！</p><p><br/></p><p><img src="../static/uploads/507113c33f664f668a57b28b505d345a_leijun.webp" style="max-width: 100%;"/><br/></p>
+</article>
                 </div>
             </div>
         </div>
-    </nav>
-
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="article-container">
-                    <h1 class="article-title">最新文章！！！！</h1>
-                    <div class="article-meta">
-                        <span><i class="far fa-calendar-alt me-1"></i> 2025-03-08</span>
+        
+        <!-- 评论区 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="far fa-comments me-2"></i>评论</h5>
+            </div>
+            <div class="card-body">
+                <div id="comments-container">
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">加载中...</span>
+                        </div>
+                        <p class="mt-3">正在加载评论...</p>
                     </div>
-                    <div class="article-content">
-                        <article class="blog-post">
-<p>小米su7 ultra发布！！！</p><p><br/></p><p><img src="../static/uploads/507113c33f664f668a57b28b505d345a_leijun.webp" style="max-width: 100%;"/><br/></p>
-</article>
-                    </div>
-                    <div class="post-tags mt-4"><a href="../index.html?tag=雷军" class="badge bg-secondary me-1">雷军</a><a href="../index.html?tag= 小米" class="badge bg-secondary me-1"> 小米</a></div>
                 </div>
                 
-                <div class="d-flex justify-content-between mb-5">
-                    <a href="../index.html" class="btn btn-outline-primary">
-                        <i class="fas fa-arrow-left me-1"></i> 返回首页
-                    </a>
+                <div class="mt-4">
+                    <h5>发表评论</h5>
+                    <div class="alert alert-info">
+                        <p class="mb-0">GitHub Pages静态页面不支持直接评论功能。如需评论，请访问原始博客网站或通过以下方式联系我：</p>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="https://github.com/redondbt" class="btn btn-outline-primary me-2" target="_blank">
+                            <i class="fab fa-github me-1"></i>GitHub
+                        </a>
+                        <a href="mailto:example@example.com" class="btn btn-outline-primary">
+                            <i class="far fa-envelope me-1"></i>Email
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>派家博客</h5>
-                    <p>用心记录生活的点点滴滴</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p>© 2025 派家博客 - 保留所有权利</p>
+    
+    <div class="col-lg-4">
+        <!-- 作者信息 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="far fa-user me-2"></i>关于作者</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="../static/img/avatar.png" alt="作者头像" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                <h5>派同学</h5>
+                <p class="text-muted">热爱技术与生活的程序员</p>
+                <div class="d-flex justify-content-center">
+                    <a href="https://github.com/redondbt" class="btn btn-sm btn-outline-dark me-2" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="../about.html" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-info-circle me-1"></i>了解更多
+                    </a>
                 </div>
             </div>
         </div>
-    </footer>
+        
+        <!-- 相关文章 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-link me-2"></i>相关文章</h5>
+            </div>
+            <div class="card-body">
+                <div id="related-posts-container">
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">加载中...</span>
+                        </div>
+                        <p class="mt-3">正在加载相关文章...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 标签云 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-tags me-2"></i>标签云</h5>
+            </div>
+            <div class="card-body">
+                <div id="tags-container" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">加载中...</span>
+                    </div>
+                    <p class="mt-3">正在加载标签...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- 主题切换脚本 -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            const icon = themeToggle.querySelector('i');
-            
-            // 初始化图标
-            if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            }
-            
-            themeToggle.addEventListener('click', function() {
-                if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
-                    document.documentElement.setAttribute('data-bs-theme', 'light');
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPostFilename = window.location.pathname.split('/').pop();
+        const tagsContainer = document.getElementById('tags-container');
+        const relatedPostsContainer = document.getElementById('related-posts-container');
+        const commentsContainer = document.getElementById('comments-container');
+        
+        // 从posts_data.json加载文章数据
+        fetch('../posts_data.json')
+            .then(response => response.json())
+            .then(data => {
+                const allPosts = data.posts;
+                const currentPost = allPosts.find(post => post.filename === currentPostFilename);
+                
+                // 加载标签云
+                loadTagCloud(allPosts);
+                
+                // 加载相关文章
+                if (currentPost) {
+                    loadRelatedPosts(currentPost, allPosts);
+                    
+                    // 尝试加载评论
+                    loadComments(currentPost);
                 } else {
-                    document.documentElement.setAttribute('data-bs-theme', 'dark');
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
+                    relatedPostsContainer.innerHTML = '<p class="text-muted">无法加载相关文章</p>';
+                    commentsContainer.innerHTML = '<p class="text-muted">无法加载评论</p>';
+                }
+            })
+            .catch(error => {
+                console.error('加载文章数据失败:', error);
+                tagsContainer.innerHTML = '<p class="text-danger">加载标签失败</p>';
+                relatedPostsContainer.innerHTML = '<p class="text-danger">加载相关文章失败</p>';
+                commentsContainer.innerHTML = '<p class="text-danger">加载评论失败</p>';
+            });
+        
+        // 加载标签云
+        function loadTagCloud(posts) {
+            const tagCounts = {};
+            posts.forEach(post => {
+                if (post.tags && post.tags.length > 0) {
+                    post.tags.forEach(tag => {
+                        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                    });
                 }
             });
-        });
-    </script>
-</body>
-</html>
+            
+            tagsContainer.innerHTML = '';
+            
+            if (Object.keys(tagCounts).length === 0) {
+                tagsContainer.innerHTML = '<p class="text-muted">暂无标签</p>';
+            } else {
+                // 按标签数量排序
+                const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
+                
+                sortedTags.forEach(tag => {
+                    const count = tagCounts[tag];
+                    const tagElement = document.createElement('a');
+                    tagElement.href = `../github_tags.html?tag=${tag}`;
+                    tagElement.className = 'tag-item';
+                    tagElement.style.fontSize = `${Math.max(1, Math.min(2, 1 + count / 10))}rem`;
+                    tagElement.innerHTML = `${tag} <span class="badge bg-secondary">${count}</span>`;
+                    tagsContainer.appendChild(tagElement);
+                });
+            }
+        }
+        
+        // 加载相关文章
+        function loadRelatedPosts(currentPost, allPosts) {
+            // 如果当前文章没有标签，显示最新文章
+            if (!currentPost.tags || currentPost.tags.length === 0) {
+                showLatestPosts(allPosts, currentPost.filename);
+                return;
+            }
+            
+            // 查找具有相同标签的文章
+            const relatedPosts = allPosts.filter(post => 
+                post.filename !== currentPost.filename && // 排除当前文章
+                post.tags && 
+                post.tags.some(tag => currentPost.tags.includes(tag)) // 至少有一个共同标签
+            );
+            
+            if (relatedPosts.length === 0) {
+                showLatestPosts(allPosts, currentPost.filename);
+                return;
+            }
+            
+            // 按相关性排序（共同标签数量）
+            relatedPosts.sort((a, b) => {
+                const aCommonTags = a.tags.filter(tag => currentPost.tags.includes(tag)).length;
+                const bCommonTags = b.tags.filter(tag => currentPost.tags.includes(tag)).length;
+                
+                if (aCommonTags !== bCommonTags) {
+                    return bCommonTags - aCommonTags; // 共同标签多的排前面
+                }
+                
+                // 如果共同标签数相同，按日期排序
+                return new Date(b.date) - new Date(a.date);
+            });
+            
+            // 显示最多5篇相关文章
+            displayRelatedPosts(relatedPosts.slice(0, 5));
+        }
+        
+        // 显示最新文章（当没有相关文章时）
+        function showLatestPosts(allPosts, currentFilename) {
+            const latestPosts = allPosts
+                .filter(post => post.filename !== currentFilename)
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5);
+            
+            relatedPostsContainer.innerHTML = `
+                <div class="mb-2">
+                    <small class="text-muted">未找到相关文章，显示最新文章：</small>
+                </div>
+            `;
+            
+            displayRelatedPosts(latestPosts);
+        }
+        
+        // 显示相关文章列表
+        function displayRelatedPosts(posts) {
+            if (posts.length === 0) {
+                relatedPostsContainer.innerHTML = '<p class="text-muted">暂无相关文章</p>';
+                return;
+            }
+            
+            const listGroup = document.createElement('div');
+            listGroup.className = 'list-group list-group-flush';
+            
+            posts.forEach(post => {
+                const item = document.createElement('a');
+                item.href = post.filename;
+                item.className = 'list-group-item list-group-item-action px-0';
+                
+                item.innerHTML = `
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">${post.title}</h6>
+                    </div>
+                    <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>${post.date}</small>
+                `;
+                
+                listGroup.appendChild(item);
+            });
+            
+            relatedPostsContainer.innerHTML = '';
+            relatedPostsContainer.appendChild(listGroup);
+        }
+        
+        // 加载评论
+        function loadComments(post) {
+            // 从文件名中提取文章ID
+            const postId = post.filename.replace('.html', '');
+            
+            // 尝试加载评论JSON文件
+            fetch(`../posts/comments/${postId}.json`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('评论文件不存在');
+                    }
+                    return response.json();
+                })
+                .then(comments => {
+                    displayComments(comments);
+                })
+                .catch(error => {
+                    console.log('加载评论失败:', error);
+                    commentsContainer.innerHTML = '<p class="text-muted">暂无评论</p>';
+                });
+        }
+        
+        // 显示评论
+        function displayComments(comments) {
+            if (!comments || comments.length === 0) {
+                commentsContainer.innerHTML = '<p class="text-muted">暂无评论</p>';
+                return;
+            }
+            
+            // 按时间排序（最新的在前面）
+            comments.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            commentsContainer.innerHTML = `<h6 class="mb-3">共 ${comments.length} 条评论</h6>`;
+            
+            const commentsList = document.createElement('div');
+            commentsList.className = 'comments-list';
+            
+            comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment mb-4';
+                
+                commentElement.innerHTML = `
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <img src="../static/img/avatar-default.png" alt="用户头像" class="rounded-circle" style="width: 50px; height: 50px;">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">${comment.author || '匿名用户'}</h6>
+                                <small class="text-muted">${comment.date}</small>
+                            </div>
+                            <p class="mt-2 mb-0">${comment.content}</p>
+                        </div>
+                    </div>
+                `;
+                
+                commentsList.appendChild(commentElement);
+            });
+            
+            commentsContainer.appendChild(commentsList);
+        }
+    });
+</script>
+{% endblock %}
