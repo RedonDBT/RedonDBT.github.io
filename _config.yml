@@ -1,0 +1,42 @@
+# Jekyll配置
+title: 派家博客
+description: 记录我的学习、思考和生活点滴
+baseurl: ""
+url: "https://redondbt.github.io"
+
+# 主题设置
+theme: minima
+markdown: kramdown
+highlighter: rouge
+permalink: /posts/:title
+
+# Minima主题设置
+minima:
+  date_format: "%Y-%m-%d"
+  social_links:
+    github: redondbt
+
+# 集合设置
+collections:
+  posts:
+    output: true
+    permalink: /posts/:title
+
+# 默认设置
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "default"
+      author: "派同学"
+
+# 排除文件
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - README.md
