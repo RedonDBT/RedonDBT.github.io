@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索 - 派家博客</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="static/css/custom.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="static/img/favicon.png">
+    
+    <!-- Dark Mode Support -->
+    <script>
+        // 检查用户偏好
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-bs-theme', 'light');
+        }
+    </script>
+    
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            padding-top: 56px;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* 卡片样式 */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: rgba(0,0,0,0.03);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 15px 20px;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* 文章卡片样式 */
+        .post-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .post-card .card-img-top {
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        /* 标签样式 */
+        .tag-item {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: #f8f9fa;
+            border-radius: 20px;
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .tag-item:hover {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* 标签云容器 */
+        #tags-container {
+            line-height: 2.5;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        /* 标签大小变化 */
+        .tag-item.size-1 { font-size: 0.8rem; }
+        .tag-item.size-2 { font-size: 1rem; }
+        .tag-item.size-3 { font-size: 1.2rem; }
+        .tag-item.size-4 { font-size: 1.4rem; }
+        .tag-item.size-5 { font-size: 1.6rem; }
+        
+        /* 标签颜色变化 */
+        .tag-item:nth-child(5n+1) { background-color: #f8f9fa; }
+        .tag-item:nth-child(5n+2) { background-color: #e9ecef; }
+        .tag-item:nth-child(5n+3) { background-color: #dee2e6; }
+        .tag-item:nth-child(5n+4) { background-color: #ced4da; }
+        .tag-item:nth-child(5n+5) { background-color: #adb5bd; color: #fff; }
+        
+        /* 页脚样式 */
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        .footer a {
+            color: #fff;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer a:hover {
+            opacity: 1;
+            text-decoration: none;
+        }
+        
+        /* 主题切换按钮 */
+        .theme-toggle {
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        /* 文章内容样式 */
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .post-content h1, .post-content h2, .post-content h3 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .post-content p {
+            margin-bottom: 20px;
+        }
+        
+        .post-content pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        
+        .post-content blockquote {
+            border-left: 4px solid #007bff;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+        
+        .post-content a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .post-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .post-content table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+        
+        .post-content table th, .post-content table td {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .post-content table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        /* Dark Mode Styles */
+        [data-bs-theme="dark"] {
+            --bs-body-bg: #212529;
+            --bs-body-color: #f8f9fa;
+        }
+        
+        [data-bs-theme="dark"] .card {
+            background-color: #2c3034;
+        }
+        
+        [data-bs-theme="dark"] .card-header {
+            background-color: #343a40;
+            border-bottom: 1px solid #444;
+        }
+        
+        [data-bs-theme="dark"] .tag-item {
+            background-color: #343a40;
+            color: #adb5bd;
+        }
+        
+        [data-bs-theme="dark"] .tag-item:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        [data-bs-theme="dark"] .post-content pre {
+            background-color: #343a40;
+            color: #e9ecef;
+        }
+        
+        [data-bs-theme="dark"] .post-content blockquote {
+            background-color: #343a40;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-blog me-2"></i>派家博客
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i>首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="github_tags.html"><i class="fas fa-tags me-1"></i>标签</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html"><i class="fas fa-user me-1"></i>关于我</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="github_search.html" class="btn btn-outline-light me-2">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <div class="nav-item theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <div class="container mt-4">
+        
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-search me-2"></i>搜索文章</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <div class="input-group">
+                        <input type="text" id="search-input" class="form-control" placeholder="输入关键词搜索文章..." aria-label="搜索">
+                        <button class="btn btn-primary" type="button" id="search-button">
+                            <i class="fas fa-search me-1"></i>搜索
+                        </button>
+                    </div>
+                    <div class="form-text">支持标题、内容和标签搜索，多个关键词用空格分隔</div>
+                </div>
+                
+                <div id="search-results-container">
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-search fa-3x mb-3"></i>
+                        <p>请输入关键词开始搜索</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>派家博客</h5>
+                    <p>用心记录生活的点点滴滴</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="mb-2">
+                        <a href="https://github.com/redondbt" target="_blank" class="me-3">
+                            <i class="fab fa-github fa-lg"></i>
+                        </a>
+                        <a href="mailto:example@example.com" class="me-3">
+                            <i class="far fa-envelope fa-lg"></i>
+                        </a>
+                    </div>
+                    <p>© 2025 派家博客 - 保留所有权利</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 主题切换脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            // 初始化图标
+            if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
+                    document.documentElement.setAttribute('data-bs-theme', 'light');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                } else {
+                    document.documentElement.setAttribute('data-bs-theme', 'dark');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            });
+        });
+    </script>
+    
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const resultsContainer = document.getElementById('search-results-container');
+        let allPosts = [];
+        
+        // 从posts_data.json加载所有文章
+        fetch('posts_data.json')
+            .then(response => response.json())
+            .then(data => {
+                allPosts = data.posts;
+                
+                // 检查URL参数是否有搜索词
+                const urlParams = new URLSearchParams(window.location.search);
+                const queryParam = urlParams.get('q');
+                
+                if (queryParam) {
+                    searchInput.value = queryParam;
+                    performSearch(queryParam);
+                }
+            })
+            .catch(error => {
+                console.error('加载文章数据失败:', error);
+                resultsContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        <p class="mb-0">加载文章数据失败，请稍后再试</p>
+                    </div>
+                `;
+            });
+        
+        // 搜索按钮点击事件
+        searchButton.addEventListener('click', function() {
+            const query = searchInput.value.trim();
+            if (query) {
+                performSearch(query);
+                
+                // 更新URL，但不刷新页面
+                const url = new URL(window.location);
+                url.searchParams.set('q', query);
+                window.history.pushState({}, '', url);
+            }
+        });
+        
+        // 输入框回车事件
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+        
+        // 执行搜索
+        function performSearch(query) {
+            if (!query) {
+                return;
+            }
+            
+            // 显示加载状态
+            resultsContainer.innerHTML = `
+                <div class="text-center py-3">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">搜索中...</span>
+                    </div>
+                    <p class="mt-3">正在搜索 "${query}"...</p>
+                </div>
+            `;
+            
+            // 分割搜索词
+            const keywords = query.toLowerCase().split(/\s+/).filter(k => k.length > 0);
+            
+            if (keywords.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="alert alert-warning">
+                        <p class="mb-0">请输入有效的搜索关键词</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 搜索逻辑
+            const results = allPosts.filter(post => {
+                const title = post.title ? post.title.toLowerCase() : '';
+                const content = post.content ? post.content.toLowerCase() : '';
+                const excerpt = post.excerpt ? post.excerpt.toLowerCase() : '';
+                const tags = post.tags ? post.tags.join(' ').toLowerCase() : '';
+                
+                // 检查每个关键词是否匹配
+                return keywords.some(keyword => 
+                    title.includes(keyword) || 
+                    content.includes(keyword) || 
+                    excerpt.includes(keyword) || 
+                    tags.includes(keyword)
+                );
+            });
+            
+            // 显示搜索结果
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        <p class="mb-0">没有找到与 "${query}" 相关的文章</p>
+                    </div>
+                    <div class="mt-3">
+                        <p class="text-muted">建议：</p>
+                        <ul>
+                            <li>检查关键词拼写</li>
+                            <li>尝试使用更通用的关键词</li>
+                            <li>尝试减少关键词数量</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                // 按相关性排序（简单实现：标题匹配优先）
+                results.sort((a, b) => {
+                    const aTitle = a.title ? a.title.toLowerCase() : '';
+                    const bTitle = b.title ? b.title.toLowerCase() : '';
+                    
+                    const aMatchesTitle = keywords.some(k => aTitle.includes(k));
+                    const bMatchesTitle = keywords.some(k => bTitle.includes(k));
+                    
+                    if (aMatchesTitle && !bMatchesTitle) return -1;
+                    if (!aMatchesTitle && bMatchesTitle) return 1;
+                    
+                    // 如果标题匹配相同，按日期排序
+                    return new Date(b.date) - new Date(a.date);
+                });
+                
+                // 渲染结果
+                resultsContainer.innerHTML = `
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>搜索结果: "${query}"</h5>
+                            <span class="badge bg-primary">${results.length} 篇文章</span>
+                        </div>
+                        <hr>
+                    </div>
+                `;
+                
+                const listGroup = document.createElement('div');
+                listGroup.className = 'list-group';
+                
+                results.forEach(post => {
+                    const item = document.createElement('a');
+                    item.href = `./posts/${post.filename}`;
+                    item.className = 'list-group-item list-group-item-action';
+                    
+                    // 高亮显示匹配的关键词（简单实现）
+                    let title = post.title;
+                    let excerpt = post.excerpt || '';
+                    
+                    keywords.forEach(keyword => {
+                        if (keyword.length > 1) { // 避免高亮单个字符
+                            const regex = new RegExp(keyword, 'gi');
+                            title = title.replace(regex, match => `<mark>${match}</mark>`);
+                            excerpt = excerpt.replace(regex, match => `<mark>${match}</mark>`);
+                        }
+                    });
+                    
+                    item.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${title}</h5>
+                            <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>${post.date}</small>
+                        </div>
+                        <p class="mb-1 text-muted">${excerpt}</p>
+                        ${post.tags && post.tags.length > 0 ? 
+                            `<div class="mt-2">
+                                ${post.tags.map(tag => `<span class="badge bg-secondary me-1">${tag}</span>`).join('')}
+                            </div>` : ''}
+                    `;
+                    
+                    listGroup.appendChild(item);
+                });
+                
+                resultsContainer.appendChild(listGroup);
+            }
+        }
+    });
+</script>
+
+</body>
+</html> 
