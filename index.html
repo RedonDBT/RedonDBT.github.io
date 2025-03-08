@@ -1,338 +1,557 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>派家博客</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="static/css/custom.css" rel="stylesheet">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="static/img/favicon.png">
-    
-    <!-- Dark Mode Support -->
-    <script>
-        // 检查用户偏好
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-bs-theme', 'light');
-        }
-    </script>
-    
-    <style>
-        /* 全局样式 */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f8f9fa;
-            padding-top: 56px;
-        }
-        
-        /* 导航栏样式 */
-        .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        /* 卡片样式 */
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        
-        .card-header {
-            background-color: rgba(0,0,0,0.03);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            padding: 15px 20px;
-        }
-        
-        .card-body {
-            padding: 20px;
-        }
-        
-        /* 文章卡片样式 */
-        .post-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .post-card .card-img-top {
-            height: 180px;
-            object-fit: cover;
-        }
-        
-        /* 标签样式 */
-        .tag-item {
-            display: inline-block;
-            margin: 5px;
-            padding: 5px 10px;
-            background-color: #f8f9fa;
-            border-radius: 20px;
-            color: #6c757d;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .tag-item:hover {
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-        }
-        
-        /* 标签云容器 */
-        #tags-container {
-            line-height: 2.5;
-            text-align: center;
-            padding: 10px;
-        }
-        
-        /* 标签大小变化 */
-        .tag-item.size-1 { font-size: 0.8rem; }
-        .tag-item.size-2 { font-size: 1rem; }
-        .tag-item.size-3 { font-size: 1.2rem; }
-        .tag-item.size-4 { font-size: 1.4rem; }
-        .tag-item.size-5 { font-size: 1.6rem; }
-        
-        /* 标签颜色变化 */
-        .tag-item:nth-child(5n+1) { background-color: #f8f9fa; }
-        .tag-item:nth-child(5n+2) { background-color: #e9ecef; }
-        .tag-item:nth-child(5n+3) { background-color: #dee2e6; }
-        .tag-item:nth-child(5n+4) { background-color: #ced4da; }
-        .tag-item:nth-child(5n+5) { background-color: #adb5bd; color: #fff; }
-        
-        /* 页脚样式 */
-        .footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 30px 0;
-            margin-top: 50px;
-        }
-        
-        .footer a {
-            color: #fff;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-        
-        .footer a:hover {
-            opacity: 1;
-            text-decoration: none;
-        }
-        
-        /* 主题切换按钮 */
-        .theme-toggle {
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        /* 文章内容样式 */
-        .post-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin: 20px 0;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .post-content h1, .post-content h2, .post-content h3 {
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .post-content p {
-            margin-bottom: 20px;
-        }
-        
-        .post-content pre {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin-bottom: 20px;
-        }
-        
-        .post-content blockquote {
-            border-left: 4px solid #007bff;
-            padding: 10px 20px;
-            margin: 20px 0;
-            background-color: #f8f9fa;
-            color: #6c757d;
-        }
-        
-        .post-content a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        
-        .post-content a:hover {
-            text-decoration: underline;
-        }
-        
-        .post-content table {
-            width: 100%;
-            margin-bottom: 20px;
-            border-collapse: collapse;
-        }
-        
-        .post-content table th, .post-content table td {
-            padding: 8px;
-            border: 1px solid #dee2e6;
-        }
-        
-        .post-content table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-        }
-        
-        /* Dark Mode Styles */
-        [data-bs-theme="dark"] {
-            --bs-body-bg: #212529;
-            --bs-body-color: #f8f9fa;
-        }
-        
-        [data-bs-theme="dark"] .card {
-            background-color: #2c3034;
-        }
-        
-        [data-bs-theme="dark"] .card-header {
-            background-color: #343a40;
-            border-bottom: 1px solid #444;
-        }
-        
-        [data-bs-theme="dark"] .tag-item {
-            background-color: #343a40;
-            color: #adb5bd;
-        }
-        
-        [data-bs-theme="dark"] .tag-item:hover {
-            background-color: #007bff;
-            color: white;
-        }
-        
-        [data-bs-theme="dark"] .post-content pre {
-            background-color: #343a40;
-            color: #e9ecef;
-        }
-        
-        [data-bs-theme="dark"] .post-content blockquote {
-            background-color: #343a40;
-        }
-    </style>
-    
-    <!-- 页面特定CSS -->
-    <div id="extra-css"></div>
-</head>
-<body>
-    <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <i class="fas fa-blog me-2"></i>派家博客
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i>首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="github_tags.html"><i class="fas fa-tags me-1"></i>标签</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html"><i class="fas fa-user me-1"></i>关于我</a>
-                    </li>
-                </ul>
-                <div class="d-flex">
-                    <a href="github_search.html" class="btn btn-outline-light me-2">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="nav-item theme-toggle" id="themeToggle">
-                        <i class="fas fa-moon"></i>
+{% extends "github_base.html" %}
+
+{% block title %}首页 - 派家博客{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- 主要内容区域 -->
+    <div class="col-lg-8">
+        <!-- 欢迎区域 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title mb-3">👋 欢迎来到派家博客</h2>
+                <p class="lead">这里记录着我的学习、思考和生活点滴。作为一名热爱技术和生活的程序员，我希望通过这个平台分享我的经验和见解。</p>
+                <div class="d-flex align-items-center mt-4">
+                    <div class="me-3">
+                        <span class="badge bg-primary" id="article-count">0 篇文章</span>
+                    </div>
+                    <div class="me-3">
+                        <span class="badge bg-secondary" id="tag-count">0 个标签</span>
+                    </div>
+                    <div>
+                        <span class="badge bg-info">最后更新: <span id="last-update">加载中...</span></span>
                     </div>
                 </div>
             </div>
         </div>
-    </nav>
-
-    <!-- 主要内容 -->
-    <div class="container mt-4">
-        <div id="main-content">
-            <!-- 页面内容将在这里动态加载 -->
+        
+        <!-- 文章列表 -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-newspaper me-2"></i>最新文章</h5>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        排序方式
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item active" href="#" data-sort="date-desc">最新发布</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort="date-asc">最早发布</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort="title-asc">标题 A-Z</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort="title-desc">标题 Z-A</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="filter-tags" class="mb-3 d-none">
+                    <div class="d-flex align-items-center">
+                        <span class="me-2">当前筛选:</span>
+                        <div id="active-filters" class="d-flex flex-wrap"></div>
+                        <button id="clear-filters" class="btn btn-sm btn-outline-danger ms-2">
+                            <i class="fas fa-times me-1"></i>清除筛选
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="posts-container">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">加载中...</span>
+                        </div>
+                        <p class="mt-3">正在加载文章...</p>
+                    </div>
+                </div>
+                
+                <div id="pagination" class="d-flex justify-content-center mt-4">
+                    <!-- 分页控件将通过JavaScript动态生成 -->
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>派家博客</h5>
-                    <p>用心记录生活的点点滴滴</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="mb-2">
-                        <a href="https://github.com/redondbt" target="_blank" class="me-3">
-                            <i class="fab fa-github fa-lg"></i>
-                        </a>
-                        <a href="mailto:example@example.com" class="me-3">
-                            <i class="far fa-envelope fa-lg"></i>
-                        </a>
-                    </div>
-                    <p>© 2025 派家博客 - 保留所有权利</p>
+    
+    <!-- 侧边栏 -->
+    <div class="col-lg-4">
+        <!-- 关于我 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-user me-2"></i>关于我</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="static/img/avatar.png" alt="作者头像" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                <h5>派同学</h5>
+                <p class="text-muted">热爱技术与生活的程序员</p>
+                <div class="d-flex justify-content-center">
+                    <a href="https://github.com/redondbt" class="btn btn-sm btn-outline-dark me-2" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="about.html" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-info-circle me-1"></i>了解更多
+                    </a>
                 </div>
             </div>
         </div>
-    </footer>
+        
+        <!-- 标签云 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-tags me-2"></i>标签云</h5>
+            </div>
+            <div class="card-body">
+                <div id="tags-container" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">加载中...</span>
+                    </div>
+                    <p class="mt-3">正在加载标签...</p>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="github_tags.html" class="btn btn-sm btn-outline-primary">查看所有标签</a>
+            </div>
+        </div>
+        
+        <!-- 快速搜索 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-search me-2"></i>搜索文章</h5>
+            </div>
+            <div class="card-body">
+                <form action="github_search.html" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="q" placeholder="输入关键词..." aria-label="搜索">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- 主题切换脚本 -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            const icon = themeToggle.querySelector('i');
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const postsContainer = document.getElementById('posts-container');
+        const tagsContainer = document.getElementById('tags-container');
+        const articleCountElement = document.getElementById('article-count');
+        const tagCountElement = document.getElementById('tag-count');
+        const lastUpdateElement = document.getElementById('last-update');
+        const paginationContainer = document.getElementById('pagination');
+        const filterTagsContainer = document.getElementById('filter-tags');
+        const activeFiltersContainer = document.getElementById('active-filters');
+        const clearFiltersButton = document.getElementById('clear-filters');
+        
+        // 排序和筛选状态
+        let currentSort = 'date-desc';
+        let currentFilters = [];
+        let currentPage = 1;
+        const postsPerPage = 5;
+        let allPosts = [];
+        
+        // 从posts_data.json加载文章数据
+        fetch('posts_data.json')
+            .then(response => response.json())
+            .then(data => {
+                allPosts = data.posts;
+                
+                // 更新统计信息
+                articleCountElement.textContent = `${allPosts.length} 篇文章`;
+                
+                // 更新最后更新时间
+                if (data.generated_at) {
+                    lastUpdateElement.textContent = data.generated_at;
+                } else {
+                    const now = new Date();
+                    lastUpdateElement.textContent = now.toISOString().split('T')[0];
+                }
+                
+                // 处理标签
+                const tagCounts = {};
+                allPosts.forEach(post => {
+                    if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
+                        post.tags.forEach(tag => {
+                            if (tag && typeof tag === 'string' && tag.trim()) {
+                                const normalizedTag = tag.trim();
+                                tagCounts[normalizedTag] = (tagCounts[normalizedTag] || 0) + 1;
+                            }
+                        });
+                    }
+                });
+                
+                // 更新标签计数
+                tagCountElement.textContent = `${Object.keys(tagCounts).length} 个标签`;
+                
+                // 渲染标签云
+                renderTagCloud(tagCounts);
+                
+                // 初始渲染文章列表
+                renderPosts();
+                
+                // 检查URL参数是否有标签筛选
+                const urlParams = new URLSearchParams(window.location.search);
+                const tagParam = urlParams.get('tag');
+                
+                if (tagParam) {
+                    filterByTag(tagParam);
+                }
+            })
+            .catch(error => {
+                console.error('加载文章数据失败:', error);
+                postsContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        <p class="mb-0">加载文章数据失败，请稍后再试</p>
+                    </div>
+                `;
+                tagsContainer.innerHTML = '<p class="text-danger">加载标签失败</p>';
+            });
+        
+        // 渲染标签云
+        function renderTagCloud(tagCounts) {
+            tagsContainer.innerHTML = '';
             
-            // 初始化图标
-            if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
+            if (Object.keys(tagCounts).length === 0) {
+                tagsContainer.innerHTML = '<p class="text-muted">暂无标签</p>';
+                return;
             }
             
-            themeToggle.addEventListener('click', function() {
-                if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
-                    document.documentElement.setAttribute('data-bs-theme', 'light');
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                } else {
-                    document.documentElement.setAttribute('data-bs-theme', 'dark');
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
+            // 按标签数量排序，取前10个
+            const sortedTags = Object.keys(tagCounts)
+                .sort((a, b) => tagCounts[b] - tagCounts[a])
+                .slice(0, 10);
+            
+            // 计算标签大小
+            const maxCount = Math.max(...sortedTags.map(tag => tagCounts[tag]));
+            const minCount = Math.min(...sortedTags.map(tag => tagCounts[tag]));
+            
+            sortedTags.forEach(tag => {
+                const count = tagCounts[tag];
+                const tagElement = document.createElement('a');
+                tagElement.href = `javascript:void(0)`;
+                tagElement.className = 'tag-item';
+                
+                // 计算标签大小 (1-5)
+                const size = minCount === maxCount 
+                    ? 3 
+                    : Math.ceil(((count - minCount) / (maxCount - minCount)) * 5);
+                
+                tagElement.classList.add(`size-${size}`);
+                tagElement.innerHTML = `${tag} <span class="badge bg-secondary">${count}</span>`;
+                tagElement.addEventListener('click', function() {
+                    filterByTag(tag);
+                });
+                tagsContainer.appendChild(tagElement);
+            });
+        }
+        
+        // 渲染文章列表
+        function renderPosts() {
+            // 应用筛选
+            let filteredPosts = allPosts;
+            if (currentFilters.length > 0) {
+                filteredPosts = allPosts.filter(post => 
+                    post.tags && Array.isArray(post.tags) && 
+                    currentFilters.every(filter => 
+                        post.tags.some(tag => tag.trim() === filter.trim())
+                    )
+                );
+            }
+            
+            // 应用排序
+            filteredPosts = sortPosts(filteredPosts, currentSort);
+            
+            // 计算分页
+            const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+            const startIndex = (currentPage - 1) * postsPerPage;
+            const endIndex = Math.min(startIndex + postsPerPage, filteredPosts.length);
+            const currentPosts = filteredPosts.slice(startIndex, endIndex);
+            
+            // 渲染文章
+            if (currentPosts.length === 0) {
+                postsContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        <p class="mb-0">没有找到符合条件的文章</p>
+                    </div>
+                `;
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            postsContainer.innerHTML = '';
+            
+            currentPosts.forEach(post => {
+                const postCard = document.createElement('div');
+                postCard.className = 'card post-card mb-3';
+                
+                // 准备标签HTML
+                let tagsHtml = '';
+                if (post.tags && post.tags.length > 0) {
+                    tagsHtml = `
+                        <div class="mt-2">
+                            ${post.tags.map(tag => 
+                                `<a href="javascript:void(0)" class="badge bg-secondary me-1 tag-link" data-tag="${tag}">${tag}</a>`
+                            ).join('')}
+                        </div>
+                    `;
                 }
+                
+                postCard.innerHTML = `
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h4 class="card-title mb-0">
+                                <a href="./posts/${post.filename}" class="text-decoration-none">${post.title}</a>
+                            </h4>
+                            <span class="badge bg-light text-dark">
+                                <i class="far fa-calendar-alt me-1"></i>${post.date}
+                            </span>
+                        </div>
+                        ${post.excerpt ? `<p class="card-text text-muted">${post.excerpt}</p>` : ''}
+                        ${tagsHtml}
+                        <div class="mt-3">
+                            <a href="./posts/${post.filename}" class="btn btn-sm btn-outline-primary">
+                                阅读全文 <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加标签点击事件
+                postCard.querySelectorAll('.tag-link').forEach(tagLink => {
+                    tagLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const tag = this.getAttribute('data-tag');
+                        filterByTag(tag);
+                    });
+                });
+                
+                postsContainer.appendChild(postCard);
+            });
+            
+            // 渲染分页
+            renderPagination(totalPages);
+        }
+        
+        // 渲染分页控件
+        function renderPagination(totalPages) {
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            paginationContainer.innerHTML = `
+                <nav aria-label="文章分页">
+                    <ul class="pagination">
+                        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                            <a class="page-link" href="javascript:void(0)" data-page="${currentPage - 1}" aria-label="上一页">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        ${generatePageItems(totalPages)}
+                        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                            <a class="page-link" href="javascript:void(0)" data-page="${currentPage + 1}" aria-label="下一页">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            `;
+            
+            // 添加分页点击事件
+            paginationContainer.querySelectorAll('.page-link').forEach(pageLink => {
+                pageLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = parseInt(this.getAttribute('data-page'));
+                    if (page && page !== currentPage && page > 0 && page <= totalPages) {
+                        currentPage = page;
+                        renderPosts();
+                        // 滚动到顶部
+                        window.scrollTo({
+                            top: postsContainer.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+        
+        // 生成分页项
+        function generatePageItems(totalPages) {
+            let items = '';
+            const maxVisiblePages = 5;
+            
+            if (totalPages <= maxVisiblePages) {
+                // 显示所有页码
+                for (let i = 1; i <= totalPages; i++) {
+                    items += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="javascript:void(0)" data-page="${i}">${i}</a>
+                        </li>
+                    `;
+                }
+            } else {
+                // 显示部分页码
+                items += `
+                    <li class="page-item ${currentPage === 1 ? 'active' : ''}">
+                        <a class="page-link" href="javascript:void(0)" data-page="1">1</a>
+                    </li>
+                `;
+                
+                let startPage = Math.max(2, currentPage - 1);
+                let endPage = Math.min(totalPages - 1, currentPage + 1);
+                
+                if (startPage > 2) {
+                    items += `
+                        <li class="page-item disabled">
+                            <a class="page-link" href="javascript:void(0)">...</a>
+                        </li>
+                    `;
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    items += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="javascript:void(0)" data-page="${i}">${i}</a>
+                        </li>
+                    `;
+                }
+                
+                if (endPage < totalPages - 1) {
+                    items += `
+                        <li class="page-item disabled">
+                            <a class="page-link" href="javascript:void(0)">...</a>
+                        </li>
+                    `;
+                }
+                
+                items += `
+                    <li class="page-item ${currentPage === totalPages ? 'active' : ''}">
+                        <a class="page-link" href="javascript:void(0)" data-page="${totalPages}">${totalPages}</a>
+                    </li>
+                `;
+            }
+            
+            return items;
+        }
+        
+        // 按标签筛选
+        function filterByTag(tag) {
+            if (!currentFilters.includes(tag)) {
+                currentFilters.push(tag);
+                
+                // 显示筛选标签区域
+                filterTagsContainer.classList.remove('d-none');
+                
+                // 添加标签到活动筛选区
+                const filterTag = document.createElement('span');
+                filterTag.className = 'badge bg-primary me-1 mb-1';
+                filterTag.innerHTML = `${tag} <i class="fas fa-times ms-1" data-tag="${tag}"></i>`;
+                filterTag.querySelector('i').addEventListener('click', function() {
+                    removeFilter(tag);
+                });
+                activeFiltersContainer.appendChild(filterTag);
+                
+                // 重置到第一页
+                currentPage = 1;
+                
+                // 重新渲染文章
+                renderPosts();
+                
+                // 更新URL，但不刷新页面
+                const url = new URL(window.location);
+                url.searchParams.set('tag', tag);
+                window.history.pushState({}, '', url);
+            }
+        }
+        
+        // 移除标签筛选
+        function removeFilter(tag) {
+            const index = currentFilters.indexOf(tag);
+            if (index !== -1) {
+                currentFilters.splice(index, 1);
+                
+                // 从活动筛选区移除标签
+                const filterTags = activeFiltersContainer.querySelectorAll('i');
+                filterTags.forEach(icon => {
+                    if (icon.getAttribute('data-tag') === tag) {
+                        icon.parentElement.remove();
+                    }
+                });
+                
+                // 如果没有筛选标签，隐藏筛选区域
+                if (currentFilters.length === 0) {
+                    filterTagsContainer.classList.add('d-none');
+                    
+                    // 更新URL，移除tag参数
+                    const url = new URL(window.location);
+                    url.searchParams.delete('tag');
+                    window.history.pushState({}, '', url);
+                }
+                
+                // 重置到第一页
+                currentPage = 1;
+                
+                // 重新渲染文章
+                renderPosts();
+            }
+        }
+        
+        // 清除所有筛选
+        clearFiltersButton.addEventListener('click', function() {
+            currentFilters = [];
+            activeFiltersContainer.innerHTML = '';
+            filterTagsContainer.classList.add('d-none');
+            currentPage = 1;
+            
+            // 更新URL，移除tag参数
+            const url = new URL(window.location);
+            url.searchParams.delete('tag');
+            window.history.pushState({}, '', url);
+            
+            renderPosts();
+        });
+        
+        // 排序文章
+        function sortPosts(posts, sortMethod) {
+            const sortedPosts = [...posts];
+            
+            switch (sortMethod) {
+                case 'date-desc':
+                    sortedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'date-asc':
+                    sortedPosts.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'title-asc':
+                    sortedPosts.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'title-desc':
+                    sortedPosts.sort((a, b) => b.title.localeCompare(a.title));
+                    break;
+                default:
+                    sortedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+            
+            return sortedPosts;
+        }
+        
+        // 排序下拉菜单事件
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 更新活动状态
+                document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 更新排序方式
+                currentSort = this.getAttribute('data-sort');
+                
+                // 重置到第一页
+                currentPage = 1;
+                
+                // 重新渲染文章
+                renderPosts();
             });
         });
-    </script>
-    
-    <!-- 页面特定JavaScript -->
-    <div id="extra-js"></div>
-</body>
-</html> 
+    });
+</script>
+{% endblock %} 
