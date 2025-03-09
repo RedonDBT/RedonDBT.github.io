@@ -1,672 +1,92 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>从百草园到三味书屋 - 派家博客</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="../static/css/custom.css" rel="stylesheet">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="../static/img/favicon.png">
-    
-    <!-- Dark Mode Support -->
-    <script>
-        // 检查用户偏好
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-bs-theme', 'light');
-        }
-    </script>
-    
-    <style>
-        /* 全局样式 */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f8f9fa;
-            padding-top: 56px;
-        }
-        
-        /* 导航栏样式 */
-        .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        /* 卡片样式 */
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        
-        .card-header {
-            background-color: rgba(0,0,0,0.03);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            padding: 15px 20px;
-        }
-        
-        .card-body {
-            padding: 20px;
-        }
-        
-        /* 文章卡片样式 */
-        .post-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .post-card .card-img-top {
-            height: 180px;
-            object-fit: cover;
-        }
-        
-        /* 标签样式 */
-        .tag-item {
-            display: inline-block;
-            margin: 5px;
-            padding: 5px 10px;
-            background-color: #f8f9fa;
-            border-radius: 20px;
-            color: #6c757d;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .tag-item:hover {
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-        }
-        
-        /* 标签云容器 */
-        #tags-container {
-            line-height: 2.5;
-            text-align: center;
-            padding: 10px;
-        }
-        
-        /* 标签大小变化 */
-        .tag-item.size-1 { font-size: 0.8rem; }
-        .tag-item.size-2 { font-size: 1rem; }
-        .tag-item.size-3 { font-size: 1.2rem; }
-        .tag-item.size-4 { font-size: 1.4rem; }
-        .tag-item.size-5 { font-size: 1.6rem; }
-        
-        /* 标签颜色变化 */
-        .tag-item:nth-child(5n+1) { background-color: #f8f9fa; }
-        .tag-item:nth-child(5n+2) { background-color: #e9ecef; }
-        .tag-item:nth-child(5n+3) { background-color: #dee2e6; }
-        .tag-item:nth-child(5n+4) { background-color: #ced4da; }
-        .tag-item:nth-child(5n+5) { background-color: #adb5bd; color: #fff; }
-        
-        /* 页脚样式 */
-        .footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 30px 0;
-            margin-top: 50px;
-        }
-        
-        .footer a {
-            color: #fff;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-        
-        .footer a:hover {
-            opacity: 1;
-            text-decoration: none;
-        }
-        
-        /* 主题切换按钮 */
-        .theme-toggle {
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        /* 文章内容样式 */
-        .post-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin: 20px 0;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .post-content h1, .post-content h2, .post-content h3 {
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .post-content p {
-            margin-bottom: 20px;
-        }
-        
-        .post-content pre {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin-bottom: 20px;
-        }
-        
-        .post-content blockquote {
-            border-left: 4px solid #007bff;
-            padding: 10px 20px;
-            margin: 20px 0;
-            background-color: #f8f9fa;
-            color: #6c757d;
-        }
-        
-        .post-content a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        
-        .post-content a:hover {
-            text-decoration: underline;
-        }
-        
-        .post-content table {
-            width: 100%;
-            margin-bottom: 20px;
-            border-collapse: collapse;
-        }
-        
-        .post-content table th, .post-content table td {
-            padding: 8px;
-            border: 1px solid #dee2e6;
-        }
-        
-        .post-content table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-        }
-        
-        /* Dark Mode Styles */
-        [data-bs-theme="dark"] {
-            --bs-body-bg: #212529;
-            --bs-body-color: #f8f9fa;
-        }
-        
-        [data-bs-theme="dark"] .card {
-            background-color: #2c3034;
-        }
-        
-        [data-bs-theme="dark"] .card-header {
-            background-color: #343a40;
-            border-bottom: 1px solid #444;
-        }
-        
-        [data-bs-theme="dark"] .tag-item {
-            background-color: #343a40;
-            color: #adb5bd;
-        }
-        
-        [data-bs-theme="dark"] .tag-item:hover {
-            background-color: #007bff;
-            color: white;
-        }
-        
-        [data-bs-theme="dark"] .post-content pre {
-            background-color: #343a40;
-            color: #e9ecef;
-        }
-        
-        [data-bs-theme="dark"] .post-content blockquote {
-            background-color: #343a40;
-        }
-    </style>
-</head>
-<body>
-    <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="../index.html">
-                <i class="fas fa-blog me-2"></i>派家博客
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i>首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../github_tags.html"><i class="fas fa-tags me-1"></i>标签</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../about.html"><i class="fas fa-user me-1"></i>关于我</a>
-                    </li>
-                </ul>
-                <div class="d-flex">
-                    <a href="../github_search.html" class="btn btn-outline-light me-2">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="nav-item theme-toggle" id="themeToggle">
-                        <i class="fas fa-moon"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- 主要内容 -->
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h1 class="card-title mb-3" id="post-title">从百草园到三味书屋</h1>
-                        
-                        <div class="d-flex align-items-center text-muted mb-4">
-                            <div class="me-3">
-                                <i class="far fa-calendar-alt me-1"></i>
-                                <span id="post-date">2025-03-09</span>
-                            </div>
-                            <div class="me-3" id="post-author-container">
-                                <i class="far fa-user me-1"></i>
-                                <span id="post-author">派同学</span>
-                            </div>
-                            <div id="post-tags-container">
-                                <i class="fas fa-tags me-1"></i>
-                                <span id="post-tags"></span>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content" id="post-content">
-                            <article><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'> 1.我家的后面有一个很大的园，相传叫作百草园。现在是早已并屋子一起卖给朱文公的子孙了，连那最末次的相见也已经隔了七八年，其中似乎确凿只有一些野草 ；但那时却是我的乐园。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    2.不必说碧绿的菜畦，光滑的石井栏，高大的皂荚树，紫红的桑葚；也不必说鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上，轻捷的叫天子（云雀）忽然从草间直窜向云霄里去了。单是周围的短短的泥墙根一带，就有无限趣味。油蛉在这里低唱， 蟋蟀们在这里弹琴。翻开断砖来，有时会遇见蜈蚣；还有斑蝥，倘若用手指按住它的脊梁，便会“啪”的一声，从后窍喷出一阵烟雾。何首乌藤和木莲藤缠络着，木莲有莲房一般的果实，何首乌有臃肿的根。有人说，何首乌根是有像人形的，吃了便可以成仙，我于是常常拔它起来，牵连不断地拔起来，也曾因此弄坏了泥墙，却从来没有见过有一块根像人样。如果不怕刺，还可以摘到覆盆子，像小珊瑚珠攒成的小球，又酸又甜，色味都比桑葚要好得远。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    3.长的草里是不去的，因为相传这园里有一条很大的赤练蛇。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    4.长妈妈曾经讲给我一个故事听：先前，有一个读书人住在古庙里用功，晚间，在院子里纳凉的时候，突然听到有人在叫他。答应着，四面看时，却见一个美女的脸露在墙头上，向他一笑，隐去了。他很高兴；但竟给那走来夜谈的老和尚识破了机关。说他脸上有些妖气，一定遇见“美女蛇”了；这是人首蛇身的怪物，能唤人名，倘一答应，夜间便要来吃这人的肉的。他自然吓得要死，而那老和尚却道无妨，给他一个小盒子，说只要放在枕边，便可高枕而卧。他虽然照样办，却总是睡不着，——当然睡不着的。到半夜，果然来了，沙沙沙！门外像是风雨声。他正抖作一团时，却听得豁的一声，一道金光从枕边飞出，外面便什么声音也没有了，那金光也就飞回来，敛在盒子里。后来呢？后来，老和尚说，这是飞蜈蚣，它能吸蛇的脑髓，美女蛇就被它治死了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    5.结末的教训是：所以倘有陌生的声音叫你的名字，你万不可答应他。　</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    6.这故事很使我觉得做人之险，夏夜乘凉，往往有些担心，不敢去看墙上，而且极想得到一盒老和尚那样的飞蜈蚣。走到百草园的草丛旁边时，也常常这样想。但直到现在，总还没有得到，但也没有遇见过赤练蛇和美女蛇。叫我名字的陌生声音自然是常有的，然而都不是美女蛇。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    7.冬天的百草园比较的无味；雪一下，可就两样了。拍雪人（将自己的全形印在雪上）和塑雪罗汉需要人们鉴赏，这是荒园，人迹罕至，所以不相宜，只好来捕鸟。薄薄的雪，是不行的；总须积雪盖了地面一两天，鸟雀们久已无处觅食的时候才好。扫开一块雪，露出地面，用一支短棒支起一面大的竹筛来，下面撒些秕谷，棒上系一条长绳，人远远地牵着，看鸟雀下来啄食，走到竹筛底下的时候，将绳子一拉，便罩住了。但所得的是麻雀居多，也有白颊的“张飞鸟”，性子很躁，养不过夜的。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    8.这是闰土的父亲所传授的方法，我却不大能用。明明见它们进去了，拉了绳，跑去一看，却什么都没有，费了半天力，捉住的不过三四只。闰土的父亲是小半天便能捕获几十只，装在叉袋里叫着撞着的。我曾经问他得失的缘由，他只静静地笑道：“你太性急，来不及等它走到中间去。”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    9.我不知道为什么家里的人要将我送进书塾里去了，而且还是全城中称为最严厉的书塾。也许是因为拔何首乌毁了泥墙罢，也许是因为将砖头抛到间壁的梁家去了吧，也许是因为站在石井栏上跳下来吧……都无从知道。总而言之：我将不能常到百草园了。Ade，我的蟋蟀们！Ade，我的覆盆子们和木莲们!……</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    10.出门向东，不上半里，走过一道石桥，便是我先生的家了。从一扇黑油的竹门进去，第三间是书房。中间挂着一块匾道：三味书屋；匾下面是一幅画，画着一只很肥大的梅花鹿伏在古树下。没有孔子牌位，我们便对着那匾和鹿行礼。第一次算是拜孔子，第二次算是拜先生。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    11.第二次行礼时，先生便和蔼地在一旁答礼。他是一个高而瘦的老人，须发都花白了，还戴着大眼镜。我对他很恭敬，因为我早听到，他是本城中极方正，质朴，博学的人。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    12.不知从哪里听来的，东方朔也很渊博，他认识一种虫，名曰“怪哉”，冤气所化，用酒一浇，就消释了。我很想详细地知道这故事，但阿长是不知道的，因为她毕竟不渊博。现在得到机会了，可以问先生。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    13.“先生，‘怪哉’这虫，是怎么一回事？……”我上了生书，将要退下来的时候，赶忙问。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    14.“不知道！”他似乎很不高兴，脸上还有怒色了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    15.我才知道做学生是不应该问这些事的，只要读书，因为他是渊博的宿儒，决不至于不知道，所谓不知道者，乃是不愿意说。年纪比我大的人，往往如此，我遇见过好几回了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    16.我就只读书，正午习字，晚上对课。先生最初这几天对我很严厉，后来却好起来了，不过给我读的书渐渐加多，对课也渐渐地加上字去，从三言到五言，终于到七言。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    17.三味书屋后面也有一个园，虽然小，但在那里也可以爬上花坛去折蜡梅花，在地上或桂花树上寻蝉蜕。最好的工作是捉了苍蝇喂蚂蚁，静悄悄地没有声音。然而同窗们到园里的太多，太久，可就不行了，先生在书房里便大叫起来：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    18.“人都到那里去了！”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    19.人们便一个一个陆续走回去；一同回去，也不行的。他有一条戒尺，但是不常用，也有罚跪的规则，但也不常用，普通总不过瞪几眼，大声道：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    20.“读书！”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    21.于是大家放开喉咙读一阵书，真是人声鼎沸。有念“仁远乎哉我欲仁斯仁至矣”的，有念“笑人齿缺曰狗窦大开”的，有念“上九潜龙勿用”的，有念“厥土下上上错厥贡苞茅橘柚”的……先生自己也念书。后来，我们的声音便低下去，静下去了，只有他还大声朗读着：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    22.“铁如意，指挥倜傥，一坐皆惊呢；金叵罗，颠倒淋漓噫，千杯未醉嗬---”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    23.我疑心这是极好的文章，因为读到这里，他总是微笑起来，而且将头仰起，摇着，向后面拗过去，拗过去。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    24.先生读书入神的时候，于我们是很相宜的。有几个便用纸糊的盔甲套在指甲上做戏。我是画画儿，用一种叫作“荆川纸”的，蒙在小说的绣像上一个个描下来， 像习字时候的影写一样。读的书多起来，画的画也多起来；书没有读成，画的成绩却不少了，最成片段的是《荡寇志》和《西游记》的绣像，都有一大本。后来，为要钱用，卖给了一个有钱的同窗了。他的父亲是开锡箔店的；听说现在自己已经做了店主，而且快要升到绅士的地位了。这东西早已没有了吧。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>九月十八日。</div></article>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 评论区 -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="far fa-comments me-2"></i>评论</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="comments-container">
-                            <div class="text-center py-3">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">加载中...</span>
+                        <!DOCTYPE html>
+                        <html lang="zh-CN">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>从百草园到三味书屋</title>
+                            <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+                            <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+                            <link href="/static/css/custom.css" rel="stylesheet">
+                            <style>
+                                body {
+                                    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+                                    color: #333;
+                                    line-height: 1.6;
+                                }
+                                .post-container {
+                                    max-width: 800px;
+                                    margin: 0 auto;
+                                    padding: 20px;
+                                }
+                                .post-header {
+                                    margin-bottom: 30px;
+                                    border-bottom: 1px solid #eee;
+                                    padding-bottom: 20px;
+                                }
+                                .post-meta {
+                                    color: #666;
+                                    font-size: 0.9rem;
+                                    margin: 10px 0;
+                                }
+                                .post-tags {
+                                    margin: 15px 0;
+                                }
+                                .post-content {
+                                    margin-top: 30px;
+                                }
+                                .badge {
+                                    background-color: #f8f9fa;
+                                    color: #333;
+                                    font-weight: normal;
+                                    padding: 5px 10px;
+                                    margin-right: 5px;
+                                    border-radius: 20px;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                                <div class="container">
+                                    <a class="navbar-brand" href="/">派家博客</a>
+                                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
+                                    <div class="collapse navbar-collapse" id="navbarNav">
+                                        <ul class="navbar-nav me-auto">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/"><i class="fas fa-home"></i> 首页</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <p class="mt-3">正在加载评论...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <h5>发表评论</h5>
-                            <div class="alert alert-info">
-                                <p class="mb-0">GitHub Pages静态页面不支持直接评论功能。如需评论，请访问原始博客网站或通过以下方式联系我：</p>
-                            </div>
-                            <div class="d-flex justify-content-center mt-3">
-                                <a href="https://github.com/redondbt" class="btn btn-outline-primary me-2" target="_blank">
-                                    <i class="fab fa-github me-1"></i>GitHub
-                                </a>
-                                <a href="mailto:example@example.com" class="btn btn-outline-primary">
-                                    <i class="far fa-envelope me-1"></i>Email
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <!-- 作者信息 -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="far fa-user me-2"></i>关于作者</h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <img src="../{{ author_avatar }}" alt="作者头像" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
-                        <h5>{{ author_name }}</h5>
-                        <p class="text-muted">{{ author_bio }}</p>
-                        <div class="d-flex justify-content-center">
-                            <a href="https://github.com/{{ github_username }}" class="btn btn-sm btn-outline-dark me-2" target="_blank">
-                                <i class="fab fa-github"></i>
-                            </a>
-                            <a href="../about.html" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-info-circle me-1"></i>了解更多
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 相关文章 -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-link me-2"></i>相关文章</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="related-posts-container">
-                            <div class="text-center py-3">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">加载中...</span>
-                                </div>
-                                <p class="mt-3">正在加载相关文章...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 标签云 -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-tags me-2"></i>标签云</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="tags-container" class="text-center">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">加载中...</span>
-                            </div>
-                            <p class="mt-3">正在加载标签...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                            </nav>
 
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>派家博客</h5>
-                    <p>用心记录生活的点点滴滴</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="mb-2">
-                        <a href="https://github.com/redondbt" target="_blank" class="me-3">
-                            <i class="fab fa-github fa-lg"></i>
-                        </a>
-                        <a href="mailto:example@example.com" class="me-3">
-                            <i class="far fa-envelope fa-lg"></i>
-                        </a>
-                    </div>
-                    <p>© 2025 派家博客 - 保留所有权利</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+                            <div class="container mt-4">
+                                <div class="post-container">
+                                    <div class="post-header">
+                                        <h1>从百草园到三味书屋</h1>
+                                        <div class="post-meta">
+                                            <i class="fas fa-calendar-alt"></i> 2025年03月08日
+                                        </div>
+                                        <div class="post-tags" id="post-tags-container">
+                                            <span class="badge bg-light text-dark"><i class="fas fa-tag me-1"></i>未分类</span>
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- 主题切换脚本 -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            const icon = themeToggle.querySelector('i');
-            
-            // 初始化图标
-            if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            }
-            
-            themeToggle.addEventListener('click', function() {
-                if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
-                    document.documentElement.setAttribute('data-bs-theme', 'light');
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                } else {
-                    document.documentElement.setAttribute('data-bs-theme', 'dark');
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                }
-            });
-        });
-    </script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPostFilename = window.location.pathname.split('/').pop();
-            const tagsContainer = document.getElementById('tags-container');
-            const relatedPostsContainer = document.getElementById('related-posts-container');
-            const commentsContainer = document.getElementById('comments-container');
-            const postTagsContainer = document.getElementById('post-tags-container');
-            const postAuthorContainer = document.getElementById('post-author-container');
-            
-            // 从posts_data.json加载文章数据
-            fetch('../../posts_data.json')
-                .then(response => response.json())
-                .then(data => {
-                    const allPosts = data.posts;
-                    const currentPost = allPosts.find(post => post.filename === currentPostFilename);
-                    
-                    // 加载标签云
-                    loadTagCloud(allPosts);
-                    
-                    // 加载相关文章
-                    if (currentPost) {
-                        // 更新文章标签
-                        if (currentPost.tags && currentPost.tags.length > 0) {
-                            const tagsHtml = currentPost.tags.map(tag => 
-                                `<a href="../github_tags.html?tag=${encodeURIComponent(tag)}" class="badge bg-secondary text-decoration-none me-1">${tag}</a>`
-                            ).join('');
-                            document.getElementById('post-tags').innerHTML = tagsHtml;
-                        } else {
-                            postTagsContainer.style.display = 'none';
-                        }
-                        
-                        // 更新作者信息
-                        if (!currentPost.author) {
-                            postAuthorContainer.style.display = 'none';
-                        }
-                        
-                        loadRelatedPosts(currentPost, allPosts);
-                        
-                        // 尝试加载评论
-                        loadComments(currentPost);
-                    } else {
-                        relatedPostsContainer.innerHTML = '<p class="text-muted">无法加载相关文章</p>';
-                        commentsContainer.innerHTML = '<p class="text-muted">无法加载评论</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('加载文章数据失败:', error);
-                    tagsContainer.innerHTML = '<p class="text-danger">加载标签失败</p>';
-                    relatedPostsContainer.innerHTML = '<p class="text-danger">加载相关文章失败</p>';
-                    commentsContainer.innerHTML = '<p class="text-danger">加载评论失败</p>';
-                });
-            
-            // 加载标签云
-            function loadTagCloud(posts) {
-                const tagCounts = {};
-                posts.forEach(post => {
-                    if (post.tags && post.tags.length > 0) {
-                        post.tags.forEach(tag => {
-                            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-                        });
-                    }
-                });
-                
-                tagsContainer.innerHTML = '';
-                
-                if (Object.keys(tagCounts).length === 0) {
-                    tagsContainer.innerHTML = '<p class="text-muted">暂无标签</p>';
-                } else {
-                    // 按标签数量排序
-                    const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
-                    
-                    sortedTags.forEach(tag => {
-                        const count = tagCounts[tag];
-                        const tagElement = document.createElement('a');
-                        tagElement.href = `../github_tags.html?tag=${tag}`;
-                        tagElement.className = 'tag-item';
-                        tagElement.style.fontSize = `${Math.max(1, Math.min(2, 1 + count / 10))}rem`;
-                        tagElement.innerHTML = `${tag} <span class="badge bg-secondary">${count}</span>`;
-                        tagsContainer.appendChild(tagElement);
-                    });
-                }
-            }
-            
-            // 加载相关文章
-            function loadRelatedPosts(currentPost, allPosts) {
-                // 如果当前文章没有标签，显示最新文章
-                if (!currentPost.tags || currentPost.tags.length === 0) {
-                    showLatestPosts(allPosts, currentPost.filename);
-                    return;
-                }
-                
-                // 查找具有相同标签的文章
-                const relatedPosts = allPosts.filter(post => 
-                    post.filename !== currentPost.filename && // 排除当前文章
-                    post.tags && 
-                    post.tags.some(tag => currentPost.tags.includes(tag)) // 至少有一个共同标签
-                );
-                
-                if (relatedPosts.length === 0) {
-                    showLatestPosts(allPosts, currentPost.filename);
-                    return;
-                }
-                
-                // 按相关性排序（共同标签数量）
-                relatedPosts.sort((a, b) => {
-                    const aCommonTags = a.tags.filter(tag => currentPost.tags.includes(tag)).length;
-                    const bCommonTags = b.tags.filter(tag => currentPost.tags.includes(tag)).length;
-                    
-                    if (aCommonTags !== bCommonTags) {
-                        return bCommonTags - aCommonTags; // 共同标签多的排前面
-                    }
-                    
-                    // 如果共同标签数相同，按日期排序
-                    return new Date(b.date) - new Date(a.date);
-                });
-                
-                // 显示最多5篇相关文章
-                displayRelatedPosts(relatedPosts.slice(0, 5));
-            }
-            
-            // 显示最新文章（当没有相关文章时）
-            function showLatestPosts(allPosts, currentFilename) {
-                const latestPosts = allPosts
-                    .filter(post => post.filename !== currentFilename)
-                    .sort((a, b) => new Date(b.date) - new Date(a.date))
-                    .slice(0, 5);
-                
-                relatedPostsContainer.innerHTML = `
-                    <div class="mb-2">
-                        <small class="text-muted">未找到相关文章，显示最新文章：</small>
-                    </div>
-                `;
-                
-                displayRelatedPosts(latestPosts);
-            }
-            
-            // 显示相关文章列表
-            function displayRelatedPosts(posts) {
-                if (posts.length === 0) {
-                    relatedPostsContainer.innerHTML = '<p class="text-muted">暂无相关文章</p>';
-                    return;
-                }
-                
-                const listGroup = document.createElement('div');
-                listGroup.className = 'list-group list-group-flush';
-                
-                posts.forEach(post => {
-                    const item = document.createElement('a');
-                    item.href = post.filename;
-                    item.className = 'list-group-item list-group-item-action px-0';
-                    
-                    item.innerHTML = `
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">${post.title}</h6>
-                        </div>
-                        <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>${post.date}</small>
-                    `;
-                    
-                    listGroup.appendChild(item);
-                });
-                
-                relatedPostsContainer.innerHTML = '';
-                relatedPostsContainer.appendChild(listGroup);
-            }
-            
-            // 加载评论
-            function loadComments(post) {
-                // 从文件名中提取文章ID
-                const postId = post.filename.replace('.html', '');
-                
-                // 尝试加载评论JSON文件
-                fetch(`../posts/comments/${postId}.json`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('评论文件不存在');
-                        }
-                        return response.json();
-                    })
-                    .then(comments => {
-                        displayComments(comments);
-                    })
-                    .catch(error => {
-                        console.log('加载评论失败:', error);
-                        commentsContainer.innerHTML = '<p class="text-muted">暂无评论</p>';
-                    });
-            }
-            
-            // 显示评论
-            function displayComments(comments) {
-                if (!comments || comments.length === 0) {
-                    commentsContainer.innerHTML = '<p class="text-muted">暂无评论</p>';
-                    return;
-                }
-                
-                // 按时间排序（最新的在前面）
-                comments.sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                commentsContainer.innerHTML = `<h6 class="mb-3">共 ${comments.length} 条评论</h6>`;
-                
-                const commentsList = document.createElement('div');
-                commentsList.className = 'comments-list';
-                
-                comments.forEach(comment => {
-                    const commentElement = document.createElement('div');
-                    commentElement.className = 'comment mb-4';
-                    
-                    commentElement.innerHTML = `
-                        <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <img src="../static/img/avatar-default.png" alt="用户头像" class="rounded-circle" style="width: 50px; height: 50px;">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0">${comment.author || '匿名用户'}</h6>
-                                    <small class="text-muted">${comment.date}</small>
+                                        </div>
+                                    </div>
+                                    <div class="post-content">
+                                        <div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'> 1.我家的后面有一个很大的园，相传叫作百草园。现在是早已并屋子一起卖给朱文公的子孙了，连那最末次的相见也已经隔了七八年，其中似乎确凿只有一些野草 ；但那时却是我的乐园。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    2.不必说碧绿的菜畦，光滑的石井栏，高大的皂荚树，紫红的桑葚；也不必说鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上，轻捷的叫天子（云雀）忽然从草间直窜向云霄里去了。单是周围的短短的泥墙根一带，就有无限趣味。油蛉在这里低唱， 蟋蟀们在这里弹琴。翻开断砖来，有时会遇见蜈蚣；还有斑蝥，倘若用手指按住它的脊梁，便会“啪”的一声，从后窍喷出一阵烟雾。何首乌藤和木莲藤缠络着，木莲有莲房一般的果实，何首乌有臃肿的根。有人说，何首乌根是有像人形的，吃了便可以成仙，我于是常常拔它起来，牵连不断地拔起来，也曾因此弄坏了泥墙，却从来没有见过有一块根像人样。如果不怕刺，还可以摘到覆盆子，像小珊瑚珠攒成的小球，又酸又甜，色味都比桑葚要好得远。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    3.长的草里是不去的，因为相传这园里有一条很大的赤练蛇。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    4.长妈妈曾经讲给我一个故事听：先前，有一个读书人住在古庙里用功，晚间，在院子里纳凉的时候，突然听到有人在叫他。答应着，四面看时，却见一个美女的脸露在墙头上，向他一笑，隐去了。他很高兴；但竟给那走来夜谈的老和尚识破了机关。说他脸上有些妖气，一定遇见“美女蛇”了；这是人首蛇身的怪物，能唤人名，倘一答应，夜间便要来吃这人的肉的。他自然吓得要死，而那老和尚却道无妨，给他一个小盒子，说只要放在枕边，便可高枕而卧。他虽然照样办，却总是睡不着，——当然睡不着的。到半夜，果然来了，沙沙沙！门外像是风雨声。他正抖作一团时，却听得豁的一声，一道金光从枕边飞出，外面便什么声音也没有了，那金光也就飞回来，敛在盒子里。后来呢？后来，老和尚说，这是飞蜈蚣，它能吸蛇的脑髓，美女蛇就被它治死了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    5.结末的教训是：所以倘有陌生的声音叫你的名字，你万不可答应他。　</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    6.这故事很使我觉得做人之险，夏夜乘凉，往往有些担心，不敢去看墙上，而且极想得到一盒老和尚那样的飞蜈蚣。走到百草园的草丛旁边时，也常常这样想。但直到现在，总还没有得到，但也没有遇见过赤练蛇和美女蛇。叫我名字的陌生声音自然是常有的，然而都不是美女蛇。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    7.冬天的百草园比较的无味；雪一下，可就两样了。拍雪人（将自己的全形印在雪上）和塑雪罗汉需要人们鉴赏，这是荒园，人迹罕至，所以不相宜，只好来捕鸟。薄薄的雪，是不行的；总须积雪盖了地面一两天，鸟雀们久已无处觅食的时候才好。扫开一块雪，露出地面，用一支短棒支起一面大的竹筛来，下面撒些秕谷，棒上系一条长绳，人远远地牵着，看鸟雀下来啄食，走到竹筛底下的时候，将绳子一拉，便罩住了。但所得的是麻雀居多，也有白颊的“张飞鸟”，性子很躁，养不过夜的。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    8.这是闰土的父亲所传授的方法，我却不大能用。明明见它们进去了，拉了绳，跑去一看，却什么都没有，费了半天力，捉住的不过三四只。闰土的父亲是小半天便能捕获几十只，装在叉袋里叫着撞着的。我曾经问他得失的缘由，他只静静地笑道：“你太性急，来不及等它走到中间去。”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    9.我不知道为什么家里的人要将我送进书塾里去了，而且还是全城中称为最严厉的书塾。也许是因为拔何首乌毁了泥墙罢，也许是因为将砖头抛到间壁的梁家去了吧，也许是因为站在石井栏上跳下来吧……都无从知道。总而言之：我将不能常到百草园了。Ade，我的蟋蟀们！Ade，我的覆盆子们和木莲们!……</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    10.出门向东，不上半里，走过一道石桥，便是我先生的家了。从一扇黑油的竹门进去，第三间是书房。中间挂着一块匾道：三味书屋；匾下面是一幅画，画着一只很肥大的梅花鹿伏在古树下。没有孔子牌位，我们便对着那匾和鹿行礼。第一次算是拜孔子，第二次算是拜先生。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    11.第二次行礼时，先生便和蔼地在一旁答礼。他是一个高而瘦的老人，须发都花白了，还戴着大眼镜。我对他很恭敬，因为我早听到，他是本城中极方正，质朴，博学的人。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    12.不知从哪里听来的，东方朔也很渊博，他认识一种虫，名曰“怪哉”，冤气所化，用酒一浇，就消释了。我很想详细地知道这故事，但阿长是不知道的，因为她毕竟不渊博。现在得到机会了，可以问先生。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    13.“先生，‘怪哉’这虫，是怎么一回事？……”我上了生书，将要退下来的时候，赶忙问。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    14.“不知道！”他似乎很不高兴，脸上还有怒色了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    15.我才知道做学生是不应该问这些事的，只要读书，因为他是渊博的宿儒，决不至于不知道，所谓不知道者，乃是不愿意说。年纪比我大的人，往往如此，我遇见过好几回了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    16.我就只读书，正午习字，晚上对课。先生最初这几天对我很严厉，后来却好起来了，不过给我读的书渐渐加多，对课也渐渐地加上字去，从三言到五言，终于到七言。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    17.三味书屋后面也有一个园，虽然小，但在那里也可以爬上花坛去折蜡梅花，在地上或桂花树上寻蝉蜕。最好的工作是捉了苍蝇喂蚂蚁，静悄悄地没有声音。然而同窗们到园里的太多，太久，可就不行了，先生在书房里便大叫起来：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    18.“人都到那里去了！”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    19.人们便一个一个陆续走回去；一同回去，也不行的。他有一条戒尺，但是不常用，也有罚跪的规则，但也不常用，普通总不过瞪几眼，大声道：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    20.“读书！”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    21.于是大家放开喉咙读一阵书，真是人声鼎沸。有念“仁远乎哉我欲仁斯仁至矣”的，有念“笑人齿缺曰狗窦大开”的，有念“上九潜龙勿用”的，有念“厥土下上上错厥贡苞茅橘柚”的……先生自己也念书。后来，我们的声音便低下去，静下去了，只有他还大声朗读着：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    22.“铁如意，指挥倜傥，一坐皆惊呢；金叵罗，颠倒淋漓噫，千杯未醉嗬---”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    23.我疑心这是极好的文章，因为读到这里，他总是微笑起来，而且将头仰起，摇着，向后面拗过去，拗过去。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    24.先生读书入神的时候，于我们是很相宜的。有几个便用纸糊的盔甲套在指甲上做戏。我是画画儿，用一种叫作“荆川纸”的，蒙在小说的绣像上一个个描下来， 像习字时候的影写一样。读的书多起来，画的画也多起来；书没有读成，画的成绩却不少了，最成片段的是《荡寇志》和《西游记》的绣像，都有一大本。后来，为要钱用，卖给了一个有钱的同窗了。他的父亲是开锡箔店的；听说现在自己已经做了店主，而且快要升到绅士的地位了。这东西早已没有了吧。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>九月十八日。</div><html><head><title>从百草园到三味书屋</title><meta content="周树人,鲁迅,百草园,三味书屋,抓周树人关我鲁迅什么事！！" name="tags"/></head><article><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'> 1.我家的后面有一个很大的园，相传叫作百草园。现在是早已并屋子一起卖给朱文公的子孙了，连那最末次的相见也已经隔了七八年，其中似乎确凿只有一些野草 ；但那时却是我的乐园。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    2.不必说碧绿的菜畦，光滑的石井栏，高大的皂荚树，紫红的桑葚；也不必说鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上，轻捷的叫天子（云雀）忽然从草间直窜向云霄里去了。单是周围的短短的泥墙根一带，就有无限趣味。油蛉在这里低唱， 蟋蟀们在这里弹琴。翻开断砖来，有时会遇见蜈蚣；还有斑蝥，倘若用手指按住它的脊梁，便会“啪”的一声，从后窍喷出一阵烟雾。何首乌藤和木莲藤缠络着，木莲有莲房一般的果实，何首乌有臃肿的根。有人说，何首乌根是有像人形的，吃了便可以成仙，我于是常常拔它起来，牵连不断地拔起来，也曾因此弄坏了泥墙，却从来没有见过有一块根像人样。如果不怕刺，还可以摘到覆盆子，像小珊瑚珠攒成的小球，又酸又甜，色味都比桑葚要好得远。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    3.长的草里是不去的，因为相传这园里有一条很大的赤练蛇。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    4.长妈妈曾经讲给我一个故事听：先前，有一个读书人住在古庙里用功，晚间，在院子里纳凉的时候，突然听到有人在叫他。答应着，四面看时，却见一个美女的脸露在墙头上，向他一笑，隐去了。他很高兴；但竟给那走来夜谈的老和尚识破了机关。说他脸上有些妖气，一定遇见“美女蛇”了；这是人首蛇身的怪物，能唤人名，倘一答应，夜间便要来吃这人的肉的。他自然吓得要死，而那老和尚却道无妨，给他一个小盒子，说只要放在枕边，便可高枕而卧。他虽然照样办，却总是睡不着，——当然睡不着的。到半夜，果然来了，沙沙沙！门外像是风雨声。他正抖作一团时，却听得豁的一声，一道金光从枕边飞出，外面便什么声音也没有了，那金光也就飞回来，敛在盒子里。后来呢？后来，老和尚说，这是飞蜈蚣，它能吸蛇的脑髓，美女蛇就被它治死了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    5.结末的教训是：所以倘有陌生的声音叫你的名字，你万不可答应他。　</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    6.这故事很使我觉得做人之险，夏夜乘凉，往往有些担心，不敢去看墙上，而且极想得到一盒老和尚那样的飞蜈蚣。走到百草园的草丛旁边时，也常常这样想。但直到现在，总还没有得到，但也没有遇见过赤练蛇和美女蛇。叫我名字的陌生声音自然是常有的，然而都不是美女蛇。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    7.冬天的百草园比较的无味；雪一下，可就两样了。拍雪人（将自己的全形印在雪上）和塑雪罗汉需要人们鉴赏，这是荒园，人迹罕至，所以不相宜，只好来捕鸟。薄薄的雪，是不行的；总须积雪盖了地面一两天，鸟雀们久已无处觅食的时候才好。扫开一块雪，露出地面，用一支短棒支起一面大的竹筛来，下面撒些秕谷，棒上系一条长绳，人远远地牵着，看鸟雀下来啄食，走到竹筛底下的时候，将绳子一拉，便罩住了。但所得的是麻雀居多，也有白颊的“张飞鸟”，性子很躁，养不过夜的。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    8.这是闰土的父亲所传授的方法，我却不大能用。明明见它们进去了，拉了绳，跑去一看，却什么都没有，费了半天力，捉住的不过三四只。闰土的父亲是小半天便能捕获几十只，装在叉袋里叫着撞着的。我曾经问他得失的缘由，他只静静地笑道：“你太性急，来不及等它走到中间去。”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    9.我不知道为什么家里的人要将我送进书塾里去了，而且还是全城中称为最严厉的书塾。也许是因为拔何首乌毁了泥墙罢，也许是因为将砖头抛到间壁的梁家去了吧，也许是因为站在石井栏上跳下来吧……都无从知道。总而言之：我将不能常到百草园了。Ade，我的蟋蟀们！Ade，我的覆盆子们和木莲们!……</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    10.出门向东，不上半里，走过一道石桥，便是我先生的家了。从一扇黑油的竹门进去，第三间是书房。中间挂着一块匾道：三味书屋；匾下面是一幅画，画着一只很肥大的梅花鹿伏在古树下。没有孔子牌位，我们便对着那匾和鹿行礼。第一次算是拜孔子，第二次算是拜先生。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    11.第二次行礼时，先生便和蔼地在一旁答礼。他是一个高而瘦的老人，须发都花白了，还戴着大眼镜。我对他很恭敬，因为我早听到，他是本城中极方正，质朴，博学的人。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    12.不知从哪里听来的，东方朔也很渊博，他认识一种虫，名曰“怪哉”，冤气所化，用酒一浇，就消释了。我很想详细地知道这故事，但阿长是不知道的，因为她毕竟不渊博。现在得到机会了，可以问先生。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    13.“先生，‘怪哉’这虫，是怎么一回事？……”我上了生书，将要退下来的时候，赶忙问。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    14.“不知道！”他似乎很不高兴，脸上还有怒色了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    15.我才知道做学生是不应该问这些事的，只要读书，因为他是渊博的宿儒，决不至于不知道，所谓不知道者，乃是不愿意说。年纪比我大的人，往往如此，我遇见过好几回了。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    16.我就只读书，正午习字，晚上对课。先生最初这几天对我很严厉，后来却好起来了，不过给我读的书渐渐加多，对课也渐渐地加上字去，从三言到五言，终于到七言。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    17.三味书屋后面也有一个园，虽然小，但在那里也可以爬上花坛去折蜡梅花，在地上或桂花树上寻蝉蜕。最好的工作是捉了苍蝇喂蚂蚁，静悄悄地没有声音。然而同窗们到园里的太多，太久，可就不行了，先生在书房里便大叫起来：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    18.“人都到那里去了！”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    19.人们便一个一个陆续走回去；一同回去，也不行的。他有一条戒尺，但是不常用，也有罚跪的规则，但也不常用，普通总不过瞪几眼，大声道：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    20.“读书！”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    21.于是大家放开喉咙读一阵书，真是人声鼎沸。有念“仁远乎哉我欲仁斯仁至矣”的，有念“笑人齿缺曰狗窦大开”的，有念“上九潜龙勿用”的，有念“厥土下上上错厥贡苞茅橘柚”的……先生自己也念书。后来，我们的声音便低下去，静下去了，只有他还大声朗读着：</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    22.“铁如意，指挥倜傥，一坐皆惊呢；金叵罗，颠倒淋漓噫，千杯未醉嗬---”</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    23.我疑心这是极好的文章，因为读到这里，他总是微笑起来，而且将头仰起，摇着，向后面拗过去，拗过去。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>    24.先生读书入神的时候，于我们是很相宜的。有几个便用纸糊的盔甲套在指甲上做戏。我是画画儿，用一种叫作“荆川纸”的，蒙在小说的绣像上一个个描下来， 像习字时候的影写一样。读的书多起来，画的画也多起来；书没有读成，画的成绩却不少了，最成片段的是《荡寇志》和《西游记》的绣像，都有一大本。后来，为要钱用，卖给了一个有钱的同窗了。他的父亲是开锡箔店的；听说现在自己已经做了店主，而且快要升到绅士的地位了。这东西早已没有了吧。</div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'><br/></div><div style='line-height: 2; color: rgb(0, 0, 0); font-family: "Noto Sans SC"; font-size: 14px;'>九月十八日。</div></article></html>
+                                    </div>
                                 </div>
-                                <p class="mt-2 mb-0">${comment.content}</p>
                             </div>
-                        </div>
-                    `;
-                    
-                    commentsList.appendChild(commentElement);
-                });
-                
-                commentsContainer.appendChild(commentsList);
-            }
-        });
-    </script>
-</body>
-</html>
+
+                            <footer class="footer mt-5 py-3 bg-light">
+                                <div class="container text-center">
+                                    <span class="text-muted">© 2025 派家博客</span>
+                                </div>
+                            </footer>
+
+                            <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+                        </body>
+                        </html>
+                        
