@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>标签云 - 由paiHomeBlog-开源Blog系统生成</title>
+    <title>gpt2 - 由paiHomeBlog-开源Blog系统生成</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     
@@ -130,32 +130,6 @@
             opacity: 1;
         }
         
-<style>
-    .tag-item {
-        display: inline-block;
-        margin: 8px;
-        padding: 6px 12px;
-        background-color: #f8f9fa;
-        border-radius: 20px;
-        text-decoration: none;
-        color: #495057;
-        transition: all 0.3s;
-    }
-    
-    .tag-item:hover,
-    .tag-item.active {
-        background-color: #007bff;
-        color: white;
-        transform: translateY(-2px);
-    }
-    
-    .tag-item.size-1 { font-size: 0.9rem; }
-    .tag-item.size-2 { font-size: 1.1rem; }
-    .tag-item.size-3 { font-size: 1.3rem; }
-    .tag-item.size-4 { font-size: 1.5rem; }
-    .tag-item.size-5 { font-size: 1.7rem; }
-</style>
-
     </style>
 </head>
 <body>
@@ -202,32 +176,193 @@
     <!-- 主要内容 -->
     <div class="container my-4">
         
-<div class="row">
-    <div class="col-12">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-tags me-2"></i>标签云</h5>
-            </div>
-            <div class="card-body">
-                <div id="tags-container" class="text-center py-3">
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- 文章标题和元数据 -->
+            <div class="mb-4">
+                <h1 class="display-4">gpt2</h1>
+                <div class="text-muted">
+                    <i class="far fa-calendar-alt"></i> 2025-03-09
                     
-                        <p class="text-muted">暂无标签</p>
+                    <span class="ms-3">
+                        <i class="fas fa-tags"></i>
+                        
+                        <a href="/tags/GPT2.html" class="badge bg-secondary text-decoration-none">GPT2</a>
+                        
+                        <a href="/tags/Transformer.html" class="badge bg-secondary text-decoration-none">Transformer</a>
+                        
+                        <a href="/tags/自注意力机制.html" class="badge bg-secondary text-decoration-none">自注意力机制</a>
+                        
+                        <a href="/tags/自动回归模型.html" class="badge bg-secondary text-decoration-none">自动回归模型</a>
+                        
+                        <a href="/tags/词嵌入.html" class="badge bg-secondary text-decoration-none">词嵌入</a>
+                        
+                    </span>
                     
                 </div>
             </div>
-        </div>
-        
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-list me-2"></i>按标签浏览文章</h5>
-            </div>
-            <div class="card-body">
-                <div id="tag-posts-container">
-                    
-                        <p class="text-center text-muted">请从上方选择一个标签查看相关文章</p>
-                    
-                </div>
-            </div>
+
+            <!-- 文章内容 -->
+            
+                
+                    <!-- HTML 内容 -->
+                    <article class="blog-post">
+                        <article class="blog-post"><p># GPT2 结构 <br/>
+
+            +-------------------+
+
+            |    输入文本序列    |
+
+            +-------------------+
+
+                      |
+
+                      v
+
+            +-------------------+
+
+            |   词嵌入&amp;位置嵌入  |
+
+            +-------------------+
+
+                      |
+
+                      v
+
+            +----------------------+
+
+            | Transformer Block    |  x N
+
+            |  (多头自注意力机制,   |
+
+            |   前馈神经网络,       |
+
+            |   残差连接和规范化)   |
+
+            +----------------------+
+
+                      |
+
+                      v
+
+            +-------------------+
+
+            |     输出向量       |
+
+            +-------------------+
+
+                      |
+
+                      v
+
+            +-------------------+
+
+            |     线性变换       |
+
+            +-------------------+
+
+                      |
+
+                      v
+
+            +-------------------+
+
+            |      Softmax      |
+
+            +-------------------+
+
+                      |
+
+                      v
+
+            +-------------------+
+
+            |   词的概率分布     |
+
+            +-------------------+
+
+<img alt="结构图" src="https://img-blog.csdnimg.cn/6972610a57104bdcb64eac8a8a038754.png" title="左图为gpt1，右图为gpt2"/></p>
+<p>左图为gpt1，右图为gpt2</p>
+<h1>transformer</h1>
+<pre><code>GPT2使用了transformer的decoder组件。一次只输出一个token。是AR模型。
+
+
+
+AR：在生成每个token之后，这个token会被添加到输入序列中组成新序列，新序列作为模型下一步的输入。这方式被称为“自动回归”（auto-regression）。
+
+
+
+自回归模型可能没有较好的上下文整合能力。
+
+</code></pre>
+<p><img alt="gpt2的结构" src="https://i-blog.csdnimg.cn/blog_migrate/a5a8fcaccd7c568718951f8226018def.png" title="gpt2的decoder结构"/></p>
+<pre><code>Look inside and you will see, the words are cutting deep inside my brain. Thunder burning, quickly burning, Knife of words is driving me insane, insane yeah.
+
+                                                                    ——Budgie
+
+</code></pre>
+<h6>下面是一个token的处理</h6>
+<pre><code>token -&gt; 自注意力层 -&gt; 神经网络层 -&gt; 下一个decoder组件
+
+</code></pre>
+<p><img alt="token的处理" src="https://i-blog.csdnimg.cn/blog_migrate/12ff013da0a75a01a4f13c6109318b01.png" title="token的处理"/></p>
+<h5>自注意力机制</h5>
+<h5>#</h5>
+<pre><code>语言依赖语境，例如，在机器人第二定律里面：
+
+A robot must obey the orders given [it] by human beings except where [such orders] would conflict with the [First Law].
+
+其中
+
+it 指的是 robot
+
+such orders 指的是前半部分the orders given it by human beings
+
+First Law 指的是机器人第一定律
+
+</code></pre>
+<h6>那么GPT2怎么理解这些？</h6>
+<pre><code>  在处理某个单词之前，它会先让模型理解相关单词，这些相关单词可以解释某个单词的上下文。
+
+  注意力要做的就是给每个词进行相关度打分，并将它们的向量表示相加来。
+
+
+
+  例如，在处理 "it" 时，注意力机制会关注到 "a robot"，注意力机制会计算"it"，"a"，"robot"三个单词的向量及其attention分数的加权和。
+
+</code></pre>
+<p><img alt="自注意力机制" src="https://i-blog.csdnimg.cn/blog_migrate/01a80c720d4e7124b7d22a75c584d024.png" title="自注意力机制"/></p>
+<h6>既然知道了自注意力机制的功能，那么自注意力的处理过程是怎么样的呢？</h6>
+<pre><code>首先，子注意力处理过程是沿着序列的每个token的路径处理的，主要组成部分有三个向量：
+
+
+
+Query: query是当前单词的表示形式，用于对其他所有单词(key)进行评分，win只需要关注当前正在处理的token的query。
+
+
+
+Key： Key可以看作是序列中所有单词的标签，是我们找相关单词的对照物。
+
+
+
+Value：Value是单词的实际表示，一但我们对每个单词的相关度打分之后，我们就要对value进行相加表示当前正在处理单词的value。
+
+</code></pre>
+<p><img alt="Q K V的表示" src="https://i-blog.csdnimg.cn/blog_migrate/4f89c699af509ec2aa63880b76995e39.png" title="Q K V的表示"/></p>
+<pre><code>  一个简单的比喻：文件柜里找文件。
+
+  query就像一张便签，上面写着要找的主题。
+
+  key就像柜子里文件夹的标签，当你找到与便利贴上相关的标签的时候，我们取出该文件夹。
+
+  文件夹中的内容就是value向量。
+
+</code></pre>
+</article>
+                    </article>
+                
+            
         </div>
     </div>
 </div>
@@ -250,83 +385,12 @@
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 从URL获取标签参数
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedTag = urlParams.get('tag');
-    
-    if (selectedTag) {
-        // 解码标签名称
-        const decodedTag = decodeURIComponent(selectedTag.replace(/_/g, ' '));
-        
-        // 高亮选中的标签
-        const tagLinks = document.querySelectorAll('.tag-item');
-        tagLinks.forEach(link => {
-            if (link.textContent.trim() === decodedTag) {
-                link.classList.add('active');
-            }
-        });
-        
-        // 过滤并显示相关文章
-        fetch('posts_data.json')
-            .then(response => response.json())
-            .then(data => {
-                const filteredPosts = data.posts.filter(post => 
-                    post.tags && post.tags.includes(decodedTag)
-                );
-                
-                const postsContainer = document.getElementById('tag-posts-container');
-                if (filteredPosts.length > 0) {
-                    let html = `
-                        <div class="mb-4">
-                            <h4>
-                                <i class="fas fa-tag me-2"></i>${decodedTag}
-                                <span class="badge bg-primary ms-2">${filteredPosts.length} 篇文章</span>
-                            </h4>
-                            <hr>
-                        </div>
-                        <div class="list-group">
-                    `;
-                    
-                    filteredPosts.forEach(post => {
-                        html += `
-                            <a href="/posts/${post.filename}" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">${post.title}</h5>
-                                    <small class="text-muted">${post.date}</small>
-                                </div>
-                                ${post.excerpt ? `<p class="mb-1 text-muted">${post.excerpt}</p>` : ''}
-                                <div class="mt-2">
-                                    ${post.tags.map(tag => `
-                                        <span class="badge bg-secondary me-1">${tag}</span>
-                                    `).join('')}
-                                </div>
-                            </a>
-                        `;
-                    });
-                    
-                    html += '</div>';
-                    postsContainer.innerHTML = html;
-                } else {
-                    postsContainer.innerHTML = `
-                        <div class="alert alert-info">
-                            <p class="mb-0">没有找到包含标签 "${decodedTag}" 的文章</p>
-                        </div>
-                    `;
-                }
-            })
-            .catch(error => {
-                console.error('加载文章数据失败:', error);
-                document.getElementById('tag-posts-container').innerHTML = `
-                    <div class="alert alert-danger">
-                        <p class="mb-0">加载文章数据失败，请稍后再试。</p>
-                    </div>
-                `;
-            });
-    }
-});
-</script>
+<!-- 代码高亮 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/github.min.css">
+<script src="https://cdn.jsdelivr.net/npm/highlight.js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
 
 </body>
 </html> 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>标签云 - 由paiHomeBlog-开源Blog系统生成</title>
+    <title>11 - 由paiHomeBlog-开源Blog系统生成</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     
@@ -130,32 +130,6 @@
             opacity: 1;
         }
         
-<style>
-    .tag-item {
-        display: inline-block;
-        margin: 8px;
-        padding: 6px 12px;
-        background-color: #f8f9fa;
-        border-radius: 20px;
-        text-decoration: none;
-        color: #495057;
-        transition: all 0.3s;
-    }
-    
-    .tag-item:hover,
-    .tag-item.active {
-        background-color: #007bff;
-        color: white;
-        transform: translateY(-2px);
-    }
-    
-    .tag-item.size-1 { font-size: 0.9rem; }
-    .tag-item.size-2 { font-size: 1.1rem; }
-    .tag-item.size-3 { font-size: 1.3rem; }
-    .tag-item.size-4 { font-size: 1.5rem; }
-    .tag-item.size-5 { font-size: 1.7rem; }
-</style>
-
     </style>
 </head>
 <body>
@@ -202,32 +176,38 @@
     <!-- 主要内容 -->
     <div class="container my-4">
         
-<div class="row">
-    <div class="col-12">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-tags me-2"></i>标签云</h5>
-            </div>
-            <div class="card-body">
-                <div id="tags-container" class="text-center py-3">
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- 文章标题和元数据 -->
+            <div class="mb-4">
+                <h1 class="display-4">11</h1>
+                <div class="text-muted">
+                    <i class="far fa-calendar-alt"></i> 2025-03-09
                     
-                        <p class="text-muted">暂无标签</p>
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-list me-2"></i>按标签浏览文章</h5>
-            </div>
-            <div class="card-body">
-                <div id="tag-posts-container">
-                    
-                        <p class="text-center text-muted">请从上方选择一个标签查看相关文章</p>
+                    <span class="ms-3">
+                        <i class="fas fa-tags"></i>
+                        
+                        <a href="/tags/1123.html" class="badge bg-secondary text-decoration-none">1123</a>
+                        
+                    </span>
                     
                 </div>
             </div>
+
+            <!-- 文章内容 -->
+            
+                
+                    <!-- HTML 内容 -->
+                    <article class="blog-post">
+                        <article class="blog-post"><h2>的</h2>
+<p>的
+
+<em>*1  *</em></p>
+</article>
+                    </article>
+                
+            
         </div>
     </div>
 </div>
@@ -250,83 +230,12 @@
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 从URL获取标签参数
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedTag = urlParams.get('tag');
-    
-    if (selectedTag) {
-        // 解码标签名称
-        const decodedTag = decodeURIComponent(selectedTag.replace(/_/g, ' '));
-        
-        // 高亮选中的标签
-        const tagLinks = document.querySelectorAll('.tag-item');
-        tagLinks.forEach(link => {
-            if (link.textContent.trim() === decodedTag) {
-                link.classList.add('active');
-            }
-        });
-        
-        // 过滤并显示相关文章
-        fetch('posts_data.json')
-            .then(response => response.json())
-            .then(data => {
-                const filteredPosts = data.posts.filter(post => 
-                    post.tags && post.tags.includes(decodedTag)
-                );
-                
-                const postsContainer = document.getElementById('tag-posts-container');
-                if (filteredPosts.length > 0) {
-                    let html = `
-                        <div class="mb-4">
-                            <h4>
-                                <i class="fas fa-tag me-2"></i>${decodedTag}
-                                <span class="badge bg-primary ms-2">${filteredPosts.length} 篇文章</span>
-                            </h4>
-                            <hr>
-                        </div>
-                        <div class="list-group">
-                    `;
-                    
-                    filteredPosts.forEach(post => {
-                        html += `
-                            <a href="/posts/${post.filename}" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">${post.title}</h5>
-                                    <small class="text-muted">${post.date}</small>
-                                </div>
-                                ${post.excerpt ? `<p class="mb-1 text-muted">${post.excerpt}</p>` : ''}
-                                <div class="mt-2">
-                                    ${post.tags.map(tag => `
-                                        <span class="badge bg-secondary me-1">${tag}</span>
-                                    `).join('')}
-                                </div>
-                            </a>
-                        `;
-                    });
-                    
-                    html += '</div>';
-                    postsContainer.innerHTML = html;
-                } else {
-                    postsContainer.innerHTML = `
-                        <div class="alert alert-info">
-                            <p class="mb-0">没有找到包含标签 "${decodedTag}" 的文章</p>
-                        </div>
-                    `;
-                }
-            })
-            .catch(error => {
-                console.error('加载文章数据失败:', error);
-                document.getElementById('tag-posts-container').innerHTML = `
-                    <div class="alert alert-danger">
-                        <p class="mb-0">加载文章数据失败，请稍后再试。</p>
-                    </div>
-                `;
-            });
-    }
-});
-</script>
+<!-- 代码高亮 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/github.min.css">
+<script src="https://cdn.jsdelivr.net/npm/highlight.js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
 
 </body>
 </html> 
