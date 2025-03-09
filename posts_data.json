@@ -1,20 +1,6 @@
 {
   "posts": [
     {
-      "title": "ahaha",
-      "date": "2025-03-09",
-      "tags": [],
-      "excerpt": "",
-      "filename": "2025-03-08-ahaha.html"
-    },
-    {
-      "title": "我去了",
-      "date": "2025-03-09",
-      "tags": [],
-      "excerpt": "",
-      "filename": "2025-03-09-我去了.html"
-    },
-    {
       "title": "从百草园到三味书屋",
       "date": "2025-03-09",
       "tags": [
@@ -26,16 +12,6 @@
       ],
       "excerpt": "",
       "filename": "从百草园到三味书屋.html"
-    },
-    {
-      "title": "小米15ultra发布！雷军发布1999新价格",
-      "date": "2025-03-09",
-      "tags": [
-        "小米",
-        "雷军"
-      ],
-      "excerpt": "",
-      "filename": "小米15ultra发布！雷军发布1999新价格.html"
     }
   ],
   "generated_at": "2025-03-09"
